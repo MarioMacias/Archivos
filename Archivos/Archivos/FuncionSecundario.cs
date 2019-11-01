@@ -24,12 +24,12 @@ namespace Archivos
             Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
             Fichero.Seek(entidades[pos].atributos[indice2].direccion_Indice, SeekOrigin.Begin);
 
-            //MessageBox.Show("fichero 1: " + Fichero.Length);
+           /* //MessageBox.Show("fichero 1: " + Fichero.Length);
             Fichero.Position = Fichero.Length;
 
             //MessageBox.Show("Direccion2: " + entidades[pos].secundarios.Last().listSecD.First().getDireccion);
             entidades[pos].secundarios.Last().listSecD.First().getDireccion = Fichero.Length;
-
+            */
             binaryWriter = new BinaryWriter(Fichero);
 
             for (int s2 = 0; s2 < entidades[pos].secundarios.Count; ++s2)
@@ -71,11 +71,11 @@ namespace Archivos
             ///Despues escribiremos nuestro primer cajon de direcciones
             Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
             //MessageBox.Show("fichero 1: " + Fichero.Length);
-            /*//MessageBox.Show("fichero 3: " + Fichero.Length);
+            //MessageBox.Show("fichero 3: " + Fichero.Length);
             Fichero.Position = Fichero.Length;
 
             //MessageBox.Show("Direccion2: " + entidades[pos].secundarios.Last().listSecD.First().getDireccion);
-            entidades[pos].secundarios.Last().listSecD.First().getDireccion = Fichero.Length;*/
+            entidades[pos].secundarios.Last().listSecD.First().getDireccion = Fichero.Length;
 
             //MessageBox.Show("Direccion3: " + entidades[pos].secundarios.Last().listSecD.First().getDireccion);
             binaryWriter = new BinaryWriter(Fichero);

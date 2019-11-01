@@ -40,14 +40,15 @@ namespace Archivos
         public FuncionIndicePrimario fip = new FuncionIndicePrimario();
         public FuncionSecundario fs = new FuncionSecundario();
 
-        private FileStream Fichero;
-        private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo;
+        private FileStream Fichero, Fichero2;
+        private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo, nombreArchivoIDXsecundario;
 
         /*Constructor para la nueva creacion de un registro*/
         public FormRegistro(FormEntidad formEntidad, FileStream Fichero,string nombreArchivo, List<Entidad> entidades, int pos)
         {
             this.nombreArchivo = nombreArchivo;
             this.Fichero = Fichero;
+            this.Fichero2 = Fichero;
             this.formEntidad = formEntidad;
             this.entidades = entidades;
             this.pos = pos;
@@ -128,12 +129,23 @@ namespace Archivos
                     
                     nombreArchivoIDX = aux2;
                     nombreArchivoIDX += ex;
-                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Create); fs.listEntidades = entidades;
-                    fs.posicionEntidad = pos;
-                    fs.posicionIndice2 = indice2;
+                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Create);
+
+                    if (indice2 != -1)
+                    {
+                        string aux3 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
+
+                        nombreArchivoIDXsecundario = aux3;
+                        nombreArchivoIDXsecundario += ex;
+                        Fichero2 = new FileStream(nombreArchivoIDXsecundario, FileMode.Create);
+                        fs.listEntidades = entidades;
+                        fs.posicionEntidad = pos;
+                        fs.posicionIndice2 = indice2;
+
+                        fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                        Fichero2.Close();
+                    }
                     banderaIDX = true;
-                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
-                    
                     Fichero.Close();
                 }
                 else
@@ -144,9 +156,24 @@ namespace Archivos
                     nombreArchivoIDX = aux2;
                     nombreArchivoIDX += ex;
                     fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
-                    
+
+                    if (indice2 != -1)
+                    {
+                        string aux3 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
+
+                        nombreArchivoIDXsecundario = aux3;
+                        nombreArchivoIDXsecundario += ex;
+
+                        fs.listEntidades = entidades;
+                        fs.posicionEntidad = pos;
+                        fs.posicionIndice2 = indice2;
+
+                        fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                    }
+
                     //Ya no lee el archivo de nuevo
-                     if (banderaIDX == false)
+                    if (banderaIDX == false)
                     {
                         // MessageBox.Show("hola");
                         if (entidades[pos].primarios.Count == 0 || entidades[pos].primarios.Last().primario_Iteracion == entidades[pos].primarios.Last().indice.Count)
@@ -162,7 +189,7 @@ namespace Archivos
                                 fs.listEntidades = entidades;
                                 fs.posicionEntidad = pos;
                                 fs.posicionIndice2 = indice2;
-                                fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                                fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
                                 if (entidades[pos].secundarios.Count == 0 || (entidades[pos].secundarios.Last().getIteracion == entidades[pos].secundarios.Last().listSecD.Count))
                                 {
@@ -181,25 +208,25 @@ namespace Archivos
                 {
                     string ex = ".idx";
                     string aux2 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
-                    
-                    nombreArchivoIDX = aux2;
-                    nombreArchivoIDX += ex;
-                    Fichero = new FileStream(nombreArchivoIDX, FileMode.Create);
+
+                    nombreArchivoIDXsecundario = aux2;
+                    nombreArchivoIDXsecundario += ex;
+                    Fichero2 = new FileStream(nombreArchivoIDXsecundario, FileMode.Create);
 
                     fs.listEntidades = entidades;
-                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                    fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
 
-                    Fichero.Close();
+                    Fichero2.Close();
                 }
                 else
                 {
                     string ex = ".idx";
                     string aux2 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
 
-                    nombreArchivoIDX = aux2;
-                    nombreArchivoIDX += ex;
+                    nombreArchivoIDXsecundario = aux2;
+                    nombreArchivoIDXsecundario += ex;
                     fs.listEntidades = entidades;
-                    fs.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                    fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
                     
                     ///Para no vuelva a leer el archivo
                     if (entidades[pos].secundarios.Count == 0 || (entidades[pos].secundarios.Last().getIteracion == entidades[pos].secundarios.Last().listSecD.Count))
@@ -368,7 +395,8 @@ namespace Archivos
                         if (indice2 != -1)
                         {
                             fs.listEntidades = entidades;
-                            fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                            fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                            fs.posicionIndice2 = indice2;
 
                             ite = 0;
                             ite = fs.numeroDeIteracion(entidades[pos].atributos[indice2].longitud_Tipo);
@@ -433,6 +461,9 @@ namespace Archivos
                 {
                     registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
                     registro.iteraREG++;
+                    fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+                    fs.posicionIndice2 = indice2;
+
                     entidades[pos].registros.Add(registro);
                     fr.lisEntidades = entidades;
                     fr.asignaDatos();

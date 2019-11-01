@@ -74,7 +74,7 @@ namespace Archivos
                 }
                 catch (Exception eee)
                 {
-                    MessageBox.Show(eee.Message);
+                    //MessageBox.Show(eee.Message);
                     //llenaData();
                 }
             }
