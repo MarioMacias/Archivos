@@ -10,7 +10,6 @@ namespace Archivos
 {
     class FuncionAtributo
     {
-        private static char[] abecedario = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', };
         private List<Atributo> atributos;
 
         /*Variables para los archivos*/
@@ -65,7 +64,7 @@ namespace Archivos
 
             binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().id_Atributo);
             binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().nombre_Atributo);
-            binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().id_Atributo);
+            binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().tipo_Dato);
             binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().longitud_Tipo);
             binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().direccion_Atributo);
             binaryWriter.Write(entidades.ElementAt(pos).atributos.Last().tipo_Indice);
@@ -96,7 +95,7 @@ namespace Archivos
         /*obtiene el primer atributo de la lista, y se le modifica el apuntador de los atributos de la entidad*/
         private bool primerAtributo()
         {
-            entidades.ElementAt(pos).direccion_Siguiente = entidades.ElementAt(pos).atributos.First().direccion_Atributo;
+            entidades.ElementAt(pos).direccion_Atributo = entidades.ElementAt(pos).atributos.First().direccion_Atributo;
 
             Fichero = new FileStream(nombreArchivo, FileMode.Open, FileAccess.Write);
 
@@ -136,45 +135,24 @@ namespace Archivos
         /*Metodo para Conseguir un ID aleatorio*/
         private byte[] conseguirID()
         {
-            char letra = letraRandom();
-            int numero = numeroEnteroRandom();
             byte[] id = new byte[5];
-            byte[] conc = { Convert.ToByte(letra), Convert.ToByte(numeroEnteroRandom()),
-              Convert.ToByte(numeroEnteroRandom()),
-              Convert.ToByte(numeroEnteroRandom()),
-              Convert.ToByte(numeroEnteroRandom())};
-            id = conc;
+            new Random().NextBytes(id);
             return id;
         }
-
-        /*Letra random*/
-        private char letraRandom()
-        {
-            Random r = new Random();
-            int aleatorio = r.Next(0, 15);
-            return abecedario[aleatorio];
-        }
-
-        /*Numero random*/
-        private int numeroEnteroRandom()
-        {
-            Random r = new Random();
-            int aleatorio = r.Next(0, 100);
-            return aleatorio;
-        }
-
+        
         /*Metodo para eliminar un atributo*/
-        public bool eliminarAtributo(int pos, List<Entidad> entidades)
+        public bool eliminarAtributo(int pos, List<Entidad> entidades, string nombreArchivo)
         {
+            this.nombreArchivo = nombreArchivo;
             this.pos = pos;
             this.entidades = entidades;
-
-            if (!entidades.ElementAt(pos).atributos.Any())
+            //MessageBox.Show("dentro " + entidades.ElementAt(pos).atributos.Count.ToString() + "pos " + pos);
+            if (entidades.ElementAt(pos).atributos == null)
             {
                 MessageBox.Show("No hay mas atributos");
             }
 
-            if (entidades.ElementAt(pos).atributos.Count == 1)
+            if (entidades.ElementAt(pos).atributos.Count == 0 || entidades.ElementAt(pos).atributos.Count == 1)
             {
                 entidades.ElementAt(pos).atributos.Last().direccion_sigAtributo = -1;
                 ordenarAtributos(entidades.ElementAt(pos).atributos.Last());
@@ -218,6 +196,7 @@ namespace Archivos
             Fichero.Seek(entidades.ElementAt(pos).direccion_Entidad, SeekOrigin.Begin);
             binaryWriter = new BinaryWriter(Fichero);
 
+            binaryWriter.Write(entidades.ElementAt(pos).Id_Entidad);
             binaryWriter.Write(entidades.ElementAt(pos).nombre_Entidad);
             binaryWriter.Write(entidades.ElementAt(pos).direccion_Entidad);
             binaryWriter.Write(entidades.ElementAt(pos).direccion_Atributo);
@@ -228,7 +207,7 @@ namespace Archivos
         }
 
         /*Modificar los atributos seleccionados*/
-        public bool modificaAtributoSel(string nom, string indice, string tipo, string longi, int pos, List<Entidad> entidades)
+        public bool modificaAtributoSel(string nom, string indice, string tipo, string longi, int pos, List<Entidad> entidades, int op)
         {
             char[] c = new char[35];
             int i = 0;
@@ -238,11 +217,68 @@ namespace Archivos
                 i++;
             }
 
-            entidades.ElementAt(pos).atributos.ElementAt(pos).nombre_Atributo = c;
-            entidades.ElementAt(pos).atributos.ElementAt(pos).string_Nombre = nom;
-            entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Indice = Convert.ToInt16(indice);
-            entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Dato = Convert.ToChar(tipo);
-            entidades.ElementAt(pos).atributos.ElementAt(pos).longitud_Tipo = Convert.ToInt16(longi);
+            switch (op)
+            {
+                case 0: //para modificar todos
+                    if (nom != "" && indice != "" && tipo != "" && longi != "")
+                    {
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).nombre_Atributo = c;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).string_Nombre = nom;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Indice = Convert.ToInt16(indice);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Dato = Convert.ToChar(tipo);
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).longitud_Tipo = Convert.ToInt16(longi);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Verifica si estan todos los datos");
+                    }
+                    break;
+                case 1:// solo el nombre
+                    if (nom != "")
+                    {
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).nombre_Atributo = c;
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).string_Nombre = nom;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Verifica si esta escrito el nombre en el campo adecuado");
+                    }
+                    
+                    break;
+                case 2://tipo de dato
+                    if (tipo != "")
+                    {
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Dato = Convert.ToChar(tipo);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Verifica si hay un tipo");
+                    }
+                    break;
+                case 3://la longitud
+                    if (longi != "")
+                    {
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).longitud_Tipo = Convert.ToInt16(longi);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Veridica si existe una longitud");
+                    }
+                    
+                    break;
+                case 4: //tipo de indice
+                    if (tipo != "")
+                    {
+                        entidades.ElementAt(pos).atributos.ElementAt(pos).tipo_Indice = Convert.ToInt16(indice);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Verifica si existe un tipo de indice");
+                    }
+                    break;
+            }
+
+            
 
             apuntaSiguiente();
             return true;

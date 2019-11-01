@@ -46,6 +46,9 @@
             this.nuevoArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.abrirArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarArchivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nuevoRegistroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.primarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Cabecera = new System.Windows.Forms.Label();
             this.btn_CrearEntidad = new System.Windows.Forms.Button();
             this.btn_Modificar = new System.Windows.Forms.Button();
@@ -54,6 +57,7 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
+            this.secundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -75,6 +79,7 @@
             this.dgv_Entidad.ReadOnly = true;
             this.dgv_Entidad.Size = new System.Drawing.Size(699, 354);
             this.dgv_Entidad.TabIndex = 0;
+            this.dgv_Entidad.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgv_Entidad_CellMouseDown);
             // 
             // Id_Entidad
             // 
@@ -137,7 +142,9 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nuevoArchivoToolStripMenuItem,
             this.abrirArchivoToolStripMenuItem,
-            this.cerrarArchivoToolStripMenuItem});
+            this.cerrarArchivoToolStripMenuItem,
+            this.nuevoRegistroToolStripMenuItem,
+            this.indiceToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(721, 24);
@@ -158,6 +165,7 @@
             this.abrirArchivoToolStripMenuItem.Name = "abrirArchivoToolStripMenuItem";
             this.abrirArchivoToolStripMenuItem.Size = new System.Drawing.Size(87, 20);
             this.abrirArchivoToolStripMenuItem.Text = "Abrir archivo";
+            this.abrirArchivoToolStripMenuItem.Click += new System.EventHandler(this.abrirArchivoToolStripMenuItem_Click);
             // 
             // cerrarArchivoToolStripMenuItem
             // 
@@ -165,6 +173,35 @@
             this.cerrarArchivoToolStripMenuItem.Name = "cerrarArchivoToolStripMenuItem";
             this.cerrarArchivoToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
             this.cerrarArchivoToolStripMenuItem.Text = "Cerrar archivo";
+            this.cerrarArchivoToolStripMenuItem.Click += new System.EventHandler(this.cerrarArchivoToolStripMenuItem_Click);
+            // 
+            // nuevoRegistroToolStripMenuItem
+            // 
+            this.nuevoRegistroToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.nuevoRegistroToolStripMenuItem.Name = "nuevoRegistroToolStripMenuItem";
+            this.nuevoRegistroToolStripMenuItem.Size = new System.Drawing.Size(49, 20);
+            this.nuevoRegistroToolStripMenuItem.Text = "Datos";
+            this.nuevoRegistroToolStripMenuItem.Click += new System.EventHandler(this.nuevoRegistroToolStripMenuItem_Click);
+            // 
+            // indiceToolStripMenuItem
+            // 
+            this.indiceToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.primarioToolStripMenuItem,
+            this.secundarioToolStripMenuItem});
+            this.indiceToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.indiceToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Gray;
+            this.indiceToolStripMenuItem.Name = "indiceToolStripMenuItem";
+            this.indiceToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.indiceToolStripMenuItem.Text = "Indice";
+            // 
+            // primarioToolStripMenuItem
+            // 
+            this.primarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.primarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.primarioToolStripMenuItem.Name = "primarioToolStripMenuItem";
+            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.primarioToolStripMenuItem.Text = "Primario";
+            this.primarioToolStripMenuItem.Click += new System.EventHandler(this.primarioToolStripMenuItem_Click);
             // 
             // lbl_Cabecera
             // 
@@ -234,16 +271,17 @@
             // 
             // btn_Atributo
             // 
+            this.btn_Atributo.AutoSize = true;
             this.btn_Atributo.BackColor = System.Drawing.Color.Black;
             this.btn_Atributo.FlatAppearance.BorderSize = 0;
             this.btn_Atributo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Atributo.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btn_Atributo.Location = new System.Drawing.Point(595, 417);
+            this.btn_Atributo.Location = new System.Drawing.Point(582, 425);
             this.btn_Atributo.Margin = new System.Windows.Forms.Padding(1);
             this.btn_Atributo.Name = "btn_Atributo";
-            this.btn_Atributo.Size = new System.Drawing.Size(114, 23);
+            this.btn_Atributo.Size = new System.Drawing.Size(127, 23);
             this.btn_Atributo.TabIndex = 7;
-            this.btn_Atributo.Text = "Tabla de atributos: ";
+            this.btn_Atributo.Text = "Tabla de atributos  ";
             this.btn_Atributo.UseVisualStyleBackColor = false;
             this.btn_Atributo.Click += new System.EventHandler(this.btn_Atributo_Click);
             // 
@@ -252,7 +290,7 @@
             this.lb_atributo.AutoSize = true;
             this.lb_atributo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lb_atributo.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lb_atributo.Location = new System.Drawing.Point(605, 442);
+            this.lb_atributo.Location = new System.Drawing.Point(469, 447);
             this.lb_atributo.Name = "lb_atributo";
             this.lb_atributo.Size = new System.Drawing.Size(20, 16);
             this.lb_atributo.TabIndex = 8;
@@ -267,6 +305,15 @@
             this.tb_modificar.Name = "tb_modificar";
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
+            // 
+            // secundarioToolStripMenuItem
+            // 
+            this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
+            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.secundarioToolStripMenuItem.Text = "Secundario";
+            this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
             // 
             // FormEntidad
             // 
@@ -321,6 +368,10 @@
         private System.Windows.Forms.Button btn_Atributo;
         private System.Windows.Forms.Label lb_atributo;
         private System.Windows.Forms.TextBox tb_modificar;
+        private System.Windows.Forms.ToolStripMenuItem nuevoRegistroToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indiceToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem primarioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secundarioToolStripMenuItem;
     }
 }
 

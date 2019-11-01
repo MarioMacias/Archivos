@@ -19,6 +19,15 @@ namespace Archivos
         /*Para los atributos*/
         public List<Atributo> atributos;
 
+        /*Para los registros*/
+        public List<Registro> registros = new List<Registro>();
+
+        /*para los primarios*/
+        public List<Primario> primarios = new List<Primario>();
+
+        /*para los secundarios*/
+        public List<Secundario> secundarios = new List<Secundario>();
+
         /*Constructor de una nueva identidad*/
         public Entidad(string sNombre)
         {
@@ -38,6 +47,18 @@ namespace Archivos
             atributos = new List<Atributo>();
         }
         
+        /*Constructor para abrir una entidad*/
+        public Entidad(char[] nc, byte[] IdEntidad)
+        {
+            this.IdEntidad = IdEntidad;
+            Nombre = new char[TAM];
+            sNombre = new string(nc);
+            dirEntidad = dirAtributo = dirDato = dirSigEntidad = -1;
+            Nombre = nc;
+            /*Se crea su lista de atributos*/
+            atributos = new List<Atributo>();
+        }
+
         /*Propiedades GET SET para los diferentes variables de la entidad (Clase)*/
         public long direccion_Entidad
         {

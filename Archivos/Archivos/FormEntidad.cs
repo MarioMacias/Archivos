@@ -12,10 +12,9 @@ namespace Archivos
 {
     public partial class FormEntidad : Form
     {
-        FuncionEntidad fa; //Variable para las funciones de un archivo, crear, guardar...
-        Entidad entidad; //Variable para las entidades.
-        List<Entidad> entidades; //Lista para poder guardar todas las entidades que se vayan creando.
-
+        private FuncionEntidad fa; //Variable para las funciones de un archivo, crear, guardar...
+        private Entidad entidad; //Variable para las entidades.
+        private List<Entidad> entidades; //Lista para poder guardar todas las entidades que se vayan creando.
         private long cab; //Variable para la cabezera de las entidades;
 
         public FormEntidad()
@@ -49,12 +48,12 @@ namespace Archivos
             {
                 entidad = new Entidad(tb_entidad.Text); //Nueva entidad, con el nombre del tb.
                 entidades.Add(entidad); //se agrega la entidad creada a la lista
-                List<Entidad> auxListEntidad;
-                auxListEntidad = fa.asigrarDatos(entidades); //Le paso la lista de entidades para poder asignar la direccion de la entidad.
-                if (auxListEntidad != null) // si se pudo hacer todos los pasos para guardar la nueva entidad y no fue null
+                //List<Entidad> auxListEntidad;
+                entidades = fa.asigrarDatos(entidades); //Le paso la lista de entidades para poder asignar la direccion de la entidad.
+                if (entidades != null) // si se pudo hacer todos los pasos para guardar la nueva entidad y no fue null
                 {
-                    entidades = auxListEntidad;
-                    lbl_Cabecera.Text = fa.nuevaCabecera(entidades); //mostramos la nueva cabecera
+                    //entidades = auxListEntidad;
+                    lbl_Cabecera.Text = fa.sCabe;
                     datosDataG(); //Poner los datos en el data
                 }
                 else
@@ -74,7 +73,7 @@ namespace Archivos
         {
             dgv_Entidad.Rows.Clear();
             foreach(Entidad en in entidades){
-                int identid= BitConverter.ToInt16(en.Id_Entidad,0);
+                string identid = BitConverter.ToString(en.Id_Entidad);
                 dgv_Entidad.Rows.Add(identid, en.string_Nombre, en.direccion_Entidad, en.direccion_Atributo, en.direccion_Dato, en.direccion_Siguiente);
             }
         }
@@ -153,6 +152,109 @@ namespace Archivos
             {
                 datosDataG();
             }
+        }
+
+        /*Abrir un archivo*/
+        private void abrirArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            entidades = new List<Entidad>();
+            string c = fa.abrirArchivo(entidades);
+            if (c != "")
+            {
+                lbl_Cabecera.Text = c;
+                datosDataG();
+                botonVisible(true);
+            }
+            else
+            {
+                MessageBox.Show("No se pudo abrir");
+            }
+        }
+
+        /*Cerrar un archivo*/
+        private void cerrarArchivoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fa.cerrarArchivo())
+            {
+                dgv_Entidad.Rows.Clear();
+                tb_entidad.Text = "";
+                tb_modificar.Text = "";
+                lbl_Cabecera.Text = "";
+                lb_atributo.Text = "";
+                MessageBox.Show("cerrado homs");
+            }
+        }
+
+        /*Evento del data, para mostras valores en los tb, modificaciones, etc*/
+        private void dgv_Entidad_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int pos = dgv_Entidad.CurrentRow.Index;
+            try
+            {
+                tb_modificar.Text = entidades.ElementAt(pos).string_Nombre;
+                lb_atributo.Text = "Atributos de la entidad: " + entidades.ElementAt(pos).string_Nombre;
+                //btn_Atributo.Text = "Tabla de atributos de:  " + entidades.ElementAt(pos).string_Nombre;
+            }
+            catch
+            {
+
+            }
+        }
+
+        /*Boton para crear un nuevo registro, el cual generara un nuevo archivo con el nombre del ID*/
+        private void nuevoRegistroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                this.Hide();
+                FormRegistro nuevoRegistro = new FormRegistro(this,fa.fileS, fa.nombreDelArchivo, entidades, pos);
+                nuevoRegistro.cambia += new FormRegistro.regresar(direccionIndice);
+                nuevoRegistro.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
+
+        /*Actualiza la lista de entidades y vuelve a mostrar los datos actualizados en el dataG*/
+        private void direccionIndice(FormEntidad formEntidad, List<Entidad> entidades)
+        {
+            this.entidades = entidades;
+            formEntidad.Show();
+            datosDataG();
+        }
+
+        /*Evento para ingresar al form de Indices primarios*/
+        private void primarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                this.Hide();
+                FormIndicePrimario ip = new FormIndicePrimario(this, entidades, pos);
+                ip.cambiar += new FormIndicePrimario.cambio(regresa);
+                ip.Show();
+            }
+            else { MessageBox.Show("Seleccione una entidad."); }
+        }
+
+        /*Evento para ingresar al form de Indices secundarios*/
+        private void secundarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                this.Hide();
+                FormIndiceSecundario iS = new FormIndiceSecundario(this, entidades, pos);
+                iS.cambiar += new FormIndiceSecundario.cambio(regresa);
+                iS.Show();
+            }
+            else { MessageBox.Show("Seleccione una entidad."); }
         }
     }
 }

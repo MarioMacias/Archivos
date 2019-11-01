@@ -10,7 +10,7 @@ namespace Archivos
     {
         private static int TAM = 35;
         private byte[] IdAtributo; //id de las identidades aleatoriamente
-        private char[] nombre; //nombre del archivo para separar
+        private char[] nombre = new char[TAM]; //nombre del archivo para separar
         private string sNombre; //nombre del archivo en string
         private char tipoDato; //tipo de dato a asignar
         private int longitud; //longitud que tiene ese dato
@@ -38,6 +38,20 @@ namespace Archivos
                 this.nombre[i] = c;
                 i++;
             }
+        }
+
+        /*Constructor para leer*/
+        public Atributo(byte[] IdAtributo, char[] nc, char tipoDato, int longitud)
+        {
+            this.IdAtributo = IdAtributo;
+            sNombre = new string(nc);
+            nombre = nc;
+            this.tipoDato = tipoDato;
+            this.longitud = longitud;
+            direccionAtributo = -1;
+            tipoIndice = 0;
+            direccionIndice = -1;
+            direccionSigAtributo = -1;
         }
 
         /*Propiedades GET SET para los diferentes variables de los atributos (Clase)*/

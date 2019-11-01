@@ -16,7 +16,7 @@ namespace Archivos
         public delegate void pasar(FormEntidad fEntidad, List<Entidad> enti);
         public event pasar cambia;
 
-        int pos; //posicion de la fila seleccionada
+        int pos; //posicion de la fila seleccionadaf
         FormEntidad formEntidad; // form de entidades
         Atributo atributo; //variable para el atributo 
         FuncionAtributo fa; //variable para acceder a las funciones de los atributos
@@ -47,6 +47,7 @@ namespace Archivos
         {
             dgv_Atributo.Rows.Clear();
             this.Close();
+            cambia(formEntidad, entidades);
         }
 
         /*Si se quiere crear un nuevo atributo se habilitan los campos necesarios*/
@@ -80,9 +81,9 @@ namespace Archivos
                                             Convert.ToChar(cb_TipoDato.Text), 
                                             Convert.ToInt16(tb_Longitud.Text), 
                                             Convert.ToInt16(cb_Indice.Text));
-
+                    
                     entidades.ElementAt(pos).agregarAtributo(atributo); //Agregamos la entidad seleccionada.
-                    //MessageBox.Show(nombreArchivo);
+                    //MessageBox.Show(entidades.ElementAt(pos).atributos.Count.ToString());
                     if (fa.agregaAtributoArchivo(nombreArchivo, pos, entidades))
                     {
                         llenaDataG();
@@ -102,6 +103,12 @@ namespace Archivos
             {
                 MessageBox.Show("Verifica si los campos estan completos.");
             }
+
+            tb_Nombre.Text = "";
+            tb_Longitud.Text = "";
+            cb_Indice.Text = "";
+            cb_TipoDato.Text = "";
+
         }
 
         private void FormAtributo_Load(object sender, EventArgs e)
@@ -109,7 +116,11 @@ namespace Archivos
             botonesVisibles(false);
             tb_Nombre.Text = "";
             tb_Longitud.Text = "";
-            //llenaDataG();
+            foreach (Entidad enti in entidades)
+            {
+                cb_Entidades.Items.Add(enti.string_Nombre);
+            }
+            llenaDataG();
         }
 
         /*Llenar con los datos la tabla*/
@@ -117,34 +128,35 @@ namespace Archivos
         {
             dgv_Atributo.Rows.Clear();
 
-            foreach (Atributo at in entidades.ElementAt(pos).atributos)
+            if (entidades.ElementAt(pos).atributos != null)
             {
-                int identid = BitConverter.ToInt16(at.id_Atributo, 0);
-                dgv_Atributo.Rows.Add(identid, at.string_Nombre, at.tipo_Dato, at.longitud_Tipo, at.direccion_Atributo, at.tipo_Indice, at.direccion_Indice, at.direccion_sigAtributo);
+                foreach (Atributo at in entidades.ElementAt(pos).atributos)
+                {
+                    string identid = BitConverter.ToString(at.id_Atributo);
+                    dgv_Atributo.Rows.Add(identid, at.string_Nombre, at.tipo_Dato, at.longitud_Tipo, at.direccion_Atributo, at.tipo_Indice, at.direccion_Indice, at.direccion_sigAtributo);
+                }
+                cb_Entidades.Text = entidades.ElementAt(pos).string_Nombre;
+                botonesVisibles(true);
+            }
+            else
+            {
+                MessageBox.Show("No existen atributos.");
             }
         }
 
-        /*Boton para modificar los atributos*/
+        
         private void btn_modifAtributo_Click(object sender, EventArgs e)
         {
-            int posAt = dgv_Atributo.CurrentRow.Index;
-
-            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text,posAt, entidades))
-            {
-                tb_Nombre.Text = "";
-                tb_Longitud.Text = "";
-                cb_TipoDato.Text = "";
-                cb_Indice.Text = "";
-
-                llenaDataG();
-            }
+            
         }
+
         /*Boton para eliminar el atributo seleccionado*/
         private void btn_eliminarAtributo_Click(object sender, EventArgs e)
         {
             int posAt = dgv_Atributo.CurrentRow.Index;
 
-            if (fa.eliminarAtributo(posAt, entidades))
+            //MessageBox.Show(entidades.ElementAt(pos).atributos.Count.ToString() + " pos " + posAt);
+            if (fa.eliminarAtributo(posAt, entidades, nombreArchivo))
             {
                 llenaDataG();
             }
@@ -160,6 +172,92 @@ namespace Archivos
             else if(cb_TipoDato.Text.CompareTo("C") == 0)
             {
                 tb_Longitud.Text = "25";
+            }
+        }
+
+        private void btn_aceptarEntidad_Click(object sender, EventArgs e)
+        {
+            pos = cb_Entidades.SelectedIndex;
+            llenaDataG();
+        }
+
+        /*Para modificar todos los valores*/
+        private void modificarTodoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int posAt = dgv_Atributo.CurrentRow.Index;
+            MessageBox.Show(posAt.ToString());
+            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades,0))
+            {
+                tb_Nombre.Text = "";
+                tb_Longitud.Text = "";
+                cb_TipoDato.Text = "";
+                cb_Indice.Text = "";
+
+                llenaDataG();
+            }
+        }
+
+        /*Modificar solo el nombre*/
+        private void modificarNombreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int posAt = dgv_Atributo.CurrentRow.Index;
+
+            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 1))
+            {
+                tb_Nombre.Text = "";
+                tb_Longitud.Text = "";
+                cb_TipoDato.Text = "";
+                cb_Indice.Text = "";
+
+                llenaDataG();
+            }
+        }
+
+        /*Para modificar el tipo de dato*/
+        private void modificarTipoDeDatoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int posAt = dgv_Atributo.CurrentRow.Index;
+
+            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 2))
+            {
+                tb_Nombre.Text = "";
+                tb_Longitud.Text = "";
+                cb_TipoDato.Text = "";
+                cb_Indice.Text = "";
+
+                llenaDataG();
+            }
+        }
+
+        /*Modificar la longitud*/
+        private void modificarLongitudToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int posAt = dgv_Atributo.CurrentRow.Index;
+
+            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 3))
+            {
+                tb_Nombre.Text = "";
+                tb_Longitud.Text = "";
+                cb_TipoDato.Text = "";
+                cb_Indice.Text = "";
+
+                llenaDataG();
+            }
+        }
+
+        /*Modificar el tipo de indice*/
+        private void modificarTipoDeIndiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int posAt = dgv_Atributo.CurrentRow.Index;
+
+            if (fa.modificaAtributoSel(tb_Nombre.Text, cb_Indice.Text, cb_TipoDato.Text, tb_Longitud.Text, posAt, entidades, 4))
+            {
+                tb_Nombre.Text = "";
+                tb_Longitud.Text = "";
+                cb_TipoDato.Text = "";
+                cb_Indice.Text = "";
+
+                llenaDataG();
             }
         }
     }

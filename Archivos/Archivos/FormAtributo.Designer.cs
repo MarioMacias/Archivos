@@ -58,6 +58,13 @@
             this.cb_Indice = new System.Windows.Forms.ComboBox();
             this.btn_Regreso = new System.Windows.Forms.Button();
             this.btn_Aceptar = new System.Windows.Forms.Button();
+            this.cb_Entidades = new System.Windows.Forms.ComboBox();
+            this.btn_aceptarEntidad = new System.Windows.Forms.Button();
+            this.modificarTodoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarNombreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTipoDeDatoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarLongitudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTipoDeIndiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Atributo)).BeginInit();
             this.SuspendLayout();
@@ -85,6 +92,12 @@
             // 
             // btn_modifAtributo
             // 
+            this.btn_modifAtributo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.modificarTodoToolStripMenuItem,
+            this.modificarNombreToolStripMenuItem,
+            this.modificarTipoDeDatoToolStripMenuItem,
+            this.modificarLongitudToolStripMenuItem,
+            this.modificarTipoDeIndiceToolStripMenuItem});
             this.btn_modifAtributo.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btn_modifAtributo.Name = "btn_modifAtributo";
             this.btn_modifAtributo.Size = new System.Drawing.Size(129, 20);
@@ -310,12 +323,72 @@
             this.btn_Aceptar.Visible = false;
             this.btn_Aceptar.Click += new System.EventHandler(this.btn_Aceptar_Click);
             // 
+            // cb_Entidades
+            // 
+            this.cb_Entidades.FormattingEnabled = true;
+            this.cb_Entidades.Location = new System.Drawing.Point(620, 376);
+            this.cb_Entidades.Name = "cb_Entidades";
+            this.cb_Entidades.Size = new System.Drawing.Size(121, 21);
+            this.cb_Entidades.TabIndex = 19;
+            // 
+            // btn_aceptarEntidad
+            // 
+            this.btn_aceptarEntidad.BackColor = System.Drawing.Color.Black;
+            this.btn_aceptarEntidad.FlatAppearance.BorderSize = 0;
+            this.btn_aceptarEntidad.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_aceptarEntidad.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.btn_aceptarEntidad.Location = new System.Drawing.Point(745, 376);
+            this.btn_aceptarEntidad.Margin = new System.Windows.Forms.Padding(1);
+            this.btn_aceptarEntidad.Name = "btn_aceptarEntidad";
+            this.btn_aceptarEntidad.Size = new System.Drawing.Size(114, 23);
+            this.btn_aceptarEntidad.TabIndex = 20;
+            this.btn_aceptarEntidad.Text = "Cambiar";
+            this.btn_aceptarEntidad.UseVisualStyleBackColor = false;
+            this.btn_aceptarEntidad.Click += new System.EventHandler(this.btn_aceptarEntidad_Click);
+            // 
+            // modificarTodoToolStripMenuItem
+            // 
+            this.modificarTodoToolStripMenuItem.Name = "modificarTodoToolStripMenuItem";
+            this.modificarTodoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTodoToolStripMenuItem.Text = "Modificar todo";
+            this.modificarTodoToolStripMenuItem.Click += new System.EventHandler(this.modificarTodoToolStripMenuItem_Click);
+            // 
+            // modificarNombreToolStripMenuItem
+            // 
+            this.modificarNombreToolStripMenuItem.Name = "modificarNombreToolStripMenuItem";
+            this.modificarNombreToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarNombreToolStripMenuItem.Text = "Modificar nombre";
+            this.modificarNombreToolStripMenuItem.Click += new System.EventHandler(this.modificarNombreToolStripMenuItem_Click);
+            // 
+            // modificarTipoDeDatoToolStripMenuItem
+            // 
+            this.modificarTipoDeDatoToolStripMenuItem.Name = "modificarTipoDeDatoToolStripMenuItem";
+            this.modificarTipoDeDatoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTipoDeDatoToolStripMenuItem.Text = "Modificar tipo de dato";
+            this.modificarTipoDeDatoToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeDatoToolStripMenuItem_Click);
+            // 
+            // modificarLongitudToolStripMenuItem
+            // 
+            this.modificarLongitudToolStripMenuItem.Name = "modificarLongitudToolStripMenuItem";
+            this.modificarLongitudToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarLongitudToolStripMenuItem.Text = "Modificar longitud";
+            this.modificarLongitudToolStripMenuItem.Click += new System.EventHandler(this.modificarLongitudToolStripMenuItem_Click);
+            // 
+            // modificarTipoDeIndiceToolStripMenuItem
+            // 
+            this.modificarTipoDeIndiceToolStripMenuItem.Name = "modificarTipoDeIndiceToolStripMenuItem";
+            this.modificarTipoDeIndiceToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTipoDeIndiceToolStripMenuItem.Text = "Modificar tipo de indice";
+            this.modificarTipoDeIndiceToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeIndiceToolStripMenuItem_Click);
+            // 
             // FormAtributo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(866, 450);
+            this.Controls.Add(this.btn_aceptarEntidad);
+            this.Controls.Add(this.cb_Entidades);
             this.Controls.Add(this.btn_Aceptar);
             this.Controls.Add(this.btn_Regreso);
             this.Controls.Add(this.cb_Indice);
@@ -365,5 +438,12 @@
         private System.Windows.Forms.ComboBox cb_Indice;
         private System.Windows.Forms.Button btn_Regreso;
         private System.Windows.Forms.Button btn_Aceptar;
+        private System.Windows.Forms.ComboBox cb_Entidades;
+        private System.Windows.Forms.Button btn_aceptarEntidad;
+        private System.Windows.Forms.ToolStripMenuItem modificarTodoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarNombreToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarTipoDeDatoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarLongitudToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem modificarTipoDeIndiceToolStripMenuItem;
     }
 }
