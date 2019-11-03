@@ -147,7 +147,7 @@ namespace Archivos
         public void asignarDireccionIndiceSecundario()
         {
             Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
-            //MessageBox.Show("Dirrr: " + Fichero.Length.ToString());
+            MessageBox.Show("Dirrr: " + Fichero.Length.ToString());
             entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
             Fichero.Close();
         }
@@ -301,18 +301,24 @@ namespace Archivos
         }
 
         /*Reescribir en el archivo las direcciones*/
-        public void reescribirDirecciones(int pos)
+        public void reescribirDirecciones(int pos2)
         {
             //Solo empezaremos a escribir donde se encuentre la direccion de ese bloque
             Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
-            Fichero.Seek(entidades[pos].secundarios.Last().listSecD[pos].getDireccion, SeekOrigin.Begin);
+           /* MessageBox.Show("nombre del archivo: " + nombreArchivoIDX);
+            MessageBox.Show("tamaño fichero" + Fichero.Length.ToString());
+            MessageBox.Show
+            MessageBox.Show("pos: " + pos);
+            MessageBox.Show("tamaño secundarios: " + entidades[pos].secundarios.Count.ToString());
+            MessageBox.Show("tamaño del ultimo: " + entidades[pos].secundarios.Last().listSecD.Count.ToString());*/
+            Fichero.Seek(entidades[pos].secundarios.Last().listSecD[pos2].getDireccion, SeekOrigin.Begin);
 
             binaryWriter = new BinaryWriter(Fichero);
-            for (int s1 = 0; s1 < entidades[pos].secundarios[0].listSecD[pos].listSecDirs[0].listIndiceSecundario.Count; ++s1)
+            for (int s1 = 0; s1 < entidades[pos].secundarios[0].listSecD[pos2].listSecDirs[0].listIndiceSecundario.Count; ++s1)
             {
-                binaryWriter.Write(entidades[pos].secundarios[0].listSecD[pos].listSecDirs[0].listIndiceSecundario[s1].getDireccion);
+                binaryWriter.Write(entidades[pos].secundarios[0].listSecD[pos2].listSecDirs[0].listIndiceSecundario[s1].getDireccion);
             }
-            binaryWriter.Write(entidades[pos].secundarios[0].listSecD[pos].listSecDirs[0].getApSiguiente);
+            binaryWriter.Write(entidades[pos].secundarios[0].listSecD[pos2].listSecDirs[0].getApSiguiente);
             Fichero.Close();
         }
 
@@ -499,7 +505,7 @@ namespace Archivos
 
             return numIte;
         }
-
+        
         public int posicionIndice2
         {
             set { indice2 = value; }

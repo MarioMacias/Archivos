@@ -354,6 +354,7 @@ namespace Archivos
                             entidades = fr.lisEntidades;
                             //escribir el registro, data
                             escribirDatosData();
+                            if(indice2 == -1)
                             MessageBox.Show("Se guardo correctamente.");
                         }
                     } //si ya existe el archivo
@@ -445,8 +446,9 @@ namespace Archivos
                             fs.listEntidades = entidades;
                             fs.escribirArchivoInddiceSecundario();
                             entidades = fs.listEntidades;
-                            MessageBox.Show("Se guardo correctamente en indice secundario.");
+                            MessageBox.Show("Se guardo correctamente con indice 3 y 2.");
                         }
+                        if(indice2 == -1)
                         MessageBox.Show("Se guardo correctamente.");
                     }
                 }

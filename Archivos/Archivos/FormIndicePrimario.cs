@@ -55,27 +55,18 @@ namespace Archivos
         private void llenaData()
         {
             int j = 0;
-           
+            //MessageBox.Show("en form primario: " + entidades[pos].primarios.Count);
             foreach (Primario primario in entidades[pos].primarios)
             {
-                try
+                for (int i = 0; i < primario.indice.Count; ++i)
                 {
-                    primario.indice = primario.indice.OrderByDescending(ind => ind.IndiceP_Clave).ToList();
-                    for (int i = 0; i < primario.indice.Count; ++i)
+                    dgv_IndicePrimario.Rows.Add(primario.indice[i].IndiceP_Clave.ToString()); //mostramos la clave
+                    dgv_IndicePrimario.Rows[j].Cells[1].Value = primario.indice[i].IndiceP_Direccion;
+                    if (i == primario.indice.Count - 1)
                     {
-                        dgv_IndicePrimario.Rows.Add(primario.indice[i].IndiceP_Clave.ToString()); //mostramos la clave
-                        dgv_IndicePrimario.Rows[j].Cells[1].Value = primario.indice[i].IndiceP_Direccion;
-                        if (i == primario.indice.Count - 1)
-                        {
-                            dgv_IndicePrimario.Rows[j].Cells[2].Value = primario.apuntador_Siguiente;
-                        }
-                        j++;
+                        dgv_IndicePrimario.Rows[j].Cells[2].Value = primario.apuntador_Siguiente;
                     }
-                }
-                catch (Exception eee)
-                {
-                    //MessageBox.Show(eee.Message);
-                    //llenaData();
+                    j++;
                 }
             }
         }

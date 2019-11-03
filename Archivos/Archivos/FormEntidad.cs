@@ -235,6 +235,7 @@ namespace Archivos
                 int pos = dgv_Entidad.CurrentRow.Index;
 
                 this.Hide();
+                MessageBox.Show("en form entidad: " + entidades[pos].primarios.Count);
                 FormIndicePrimario ip = new FormIndicePrimario(this, entidades, pos);
                 ip.cambiar += new FormIndicePrimario.cambio(regresa);
                 ip.Show();

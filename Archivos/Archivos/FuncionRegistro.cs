@@ -172,27 +172,15 @@ namespace Archivos
         }
 
         /*Metodo para poder ordenar los datos*/
-        public void ordenarIndice() //donde ordena try catch
+        public void ordenarIndice() //donde ordena
         {
-            int itera = entidades[pos].primarios.Last().indice.Count;
+            int cajones = entidades[pos].primarios.Last().indice.Count;
             entidades[pos].primarios.Last().indice.RemoveRange(entidades[pos].primarios.Last().primario_Iteracion, entidades[pos].primarios.Last().indice.Count - entidades[pos].primarios.Last().primario_Iteracion);
-            /* foreach (IndicePrimario ip in entidades[pos].primarios.Last().indice)
-             {
-                 MessageBox.Show(ip.IndiceP_Clave.ToString());
-             }*/
-            try
-            {
-                entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(ind => ind.IndiceP_Clave).ToList(); //ordenamos por la clave
+            //MessageBox.Show(entidades[pos].primarios.Last().indice.Last().IndiceP_Clave.ToString());
+            entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave).ToList();
+            int cajones2 = entidades[pos].primarios.Last().indice.Count;
 
-            }
-            catch (Exception e)
-            {
-                //MessageBox.Show(e.Message);
-            }
-            
-            int iteraAux = entidades[pos].primarios.Last().indice.Count;
-
-            for (int i = iteraAux; i < itera; ++i)
+            for (int i = cajones2; i < cajones; ++i)
             {
                 entidades[pos].primarios.Last().AddIndice(-1, -1, entidades[pos].atributos[indice1]);
             }
