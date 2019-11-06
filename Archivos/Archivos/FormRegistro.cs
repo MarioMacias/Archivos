@@ -673,6 +673,7 @@ namespace Archivos
 
                     entidades[pos].secundarios.Last().listSecD[index].listSecDirs.Last().addIndice(-1);
                     entidades[pos].secundarios.Last().listSecD[index].listSecDirs.Last().getIteracion -= 1;
+
                     fs.listEntidades = entidades;
                     fs.reescribirDirecciones(index);
                     entidades = fs.listEntidades;
@@ -688,7 +689,6 @@ namespace Archivos
                     }
 
                     ///Como ya se elimino ahora buscaremos donde debe insertarse
-                    ///
                     
                     vs2 = Raux.element_Registro[indice2].ToString();
                     index = -1;

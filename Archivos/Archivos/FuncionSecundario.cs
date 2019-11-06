@@ -147,7 +147,7 @@ namespace Archivos
         public void asignarDireccionIndiceSecundario()
         {
             Fichero = File.Open(nombreArchivoIDX, FileMode.Open);
-            MessageBox.Show("Dirrr: " + Fichero.Length.ToString());
+            //MessageBox.Show("Dirrr: " + Fichero.Length.ToString());
             entidades[pos].atributos[indice2].direccion_Indice = Fichero.Length;
             Fichero.Close();
         }
@@ -199,6 +199,7 @@ namespace Archivos
             //MessageBox.Show("Hay "+ entidades[pos].secundarios.Last().listSecD.Count.ToString()+ " cajones iniciales");
             int cajones = entidades[pos].secundarios.Last().listSecD.Count;
             entidades[pos].secundarios.Last().listSecD.RemoveRange(entidades[pos].secundarios.Last().getIteracion, entidades[pos].secundarios.Last().listSecD.Count - entidades[pos].secundarios.Last().getIteracion);
+            //MessageBox.Show("mierda esa: " + entidades[pos].secundarios.Last().listSecD.Last().getClave.ToString());
             entidades[pos].secundarios.Last().listSecD = entidades[pos].secundarios.Last().listSecD.OrderBy(x => x.getClave).ToList();
             int cajones2 = entidades[pos].secundarios.Last().listSecD.Count;
             

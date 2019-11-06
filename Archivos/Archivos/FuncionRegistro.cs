@@ -176,8 +176,20 @@ namespace Archivos
         {
             int cajones = entidades[pos].primarios.Last().indice.Count;
             entidades[pos].primarios.Last().indice.RemoveRange(entidades[pos].primarios.Last().primario_Iteracion, entidades[pos].primarios.Last().indice.Count - entidades[pos].primarios.Last().primario_Iteracion);
-            //MessageBox.Show(entidades[pos].primarios.Last().indice.Last().IndiceP_Clave.ToString());
-            entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave).ToList();
+            //MessageBox.Show("mierda esa: " + entidades[pos].primarios.Last().indice.Last().IndiceP_Clave.ToString());
+            /* foreach (IndicePrimario ip in entidades[pos].primarios.Last().indice)
+             {
+                 MessageBox.Show("mierda esa: " + ip.IndiceP_Clave);
+             }*/
+            //entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave).ToList();
+            if (entidades[pos].atributos[indice1].tipo_Dato == 'E')
+            {
+                entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => Convert.ToInt32(x.IndiceP_Clave)).ToList();
+            }
+            else
+            {
+                entidades[pos].primarios.Last().indice = entidades[pos].primarios.Last().indice.OrderBy(x => x.IndiceP_Clave.ToString()).ToList();
+            }
             int cajones2 = entidades[pos].primarios.Last().indice.Count;
 
             for (int i = cajones2; i < cajones; ++i)
