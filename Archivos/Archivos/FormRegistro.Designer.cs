@@ -35,6 +35,7 @@
             this.modificarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_regresaEntidad = new System.Windows.Forms.Button();
+            this.pruebaArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -54,7 +55,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.agregarToolStripMenuItem,
             this.modificarToolStripMenuItem,
-            this.eliminarToolStripMenuItem});
+            this.eliminarToolStripMenuItem,
+            this.pruebaArbolToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(830, 24);
@@ -101,6 +103,13 @@
             this.btn_regresaEntidad.UseVisualStyleBackColor = false;
             this.btn_regresaEntidad.Click += new System.EventHandler(this.btn_regresaEntidad_Click);
             // 
+            // pruebaArbolToolStripMenuItem
+            // 
+            this.pruebaArbolToolStripMenuItem.Name = "pruebaArbolToolStripMenuItem";
+            this.pruebaArbolToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+            this.pruebaArbolToolStripMenuItem.Text = "prueba arbol";
+            this.pruebaArbolToolStripMenuItem.Click += new System.EventHandler(this.pruebaArbolToolStripMenuItem_Click);
+            // 
             // FormRegistro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -131,5 +140,6 @@
         private System.Windows.Forms.ToolStripMenuItem eliminarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem agregarToolStripMenuItem;
         private System.Windows.Forms.Button btn_regresaEntidad;
+        private System.Windows.Forms.ToolStripMenuItem pruebaArbolToolStripMenuItem;
     }
 }

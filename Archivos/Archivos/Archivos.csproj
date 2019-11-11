@@ -46,8 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Arboles\ArbolB.cs" />
     <Compile Include="Atributo.cs" />
+    <Compile Include="Arboles\ClaveBusqueda.cs" />
     <Compile Include="Entidad.cs" />
+    <Compile Include="Arboles\FormArbolPrimario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Arboles\FormArbolPrimario.Designer.cs">
+      <DependentUpon>FormArbolPrimario.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormAtributo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,6 +93,7 @@
     <Compile Include="FuncionSecundario.cs" />
     <Compile Include="IndicePrimario.cs" />
     <Compile Include="IndiceSecundario.cs" />
+    <Compile Include="Arboles\Nodo.cs" />
     <Compile Include="Primario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -92,6 +101,9 @@
     <Compile Include="Secundario.cs" />
     <Compile Include="SecundarioCve.cs" />
     <Compile Include="SecundarioDir.cs" />
+    <EmbeddedResource Include="Arboles\FormArbolPrimario.resx">
+      <DependentUpon>FormArbolPrimario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormAtributo.resx">
       <DependentUpon>FormAtributo.cs</DependentUpon>
     </EmbeddedResource>

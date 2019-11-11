@@ -257,5 +257,22 @@ namespace Archivos
             }
             else { MessageBox.Show("Seleccione una entidad."); }
         }
+
+        private void indicePrimarioBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgv_Entidad.SelectedCells != null)
+            {
+                int pos = dgv_Entidad.CurrentRow.Index;
+
+                this.Hide();
+                FormArbolPrimario nuevoArbol = new FormArbolPrimario(this, entidades, pos);
+                nuevoArbol.cambiar += new FormArbolPrimario.cambio(direccionIndice);
+                nuevoArbol.Show();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione una entidad");
+            }
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace Archivos
         private int indiceCB = -1; //Clave de busqueda
         private int indice0 = -1; //Sin clave
         private int indice2 = -1; //Secundario
+        private int indiceA1 = -1; //arbol primario
+        private int indiceA2 = -1; //Arbol secundario
 
         private Registro registro;
         List<object> datos_registro;
@@ -35,6 +37,38 @@ namespace Archivos
             registro.element_Registro = datos_registro; //se manda la lista de los datos del registro
 
             return registro;
+        }
+
+        /*Se busca en los atributos el que tenga el indice primario arbol*/
+        public int buscaIndiceAprimario()
+        {
+            int i = 0;
+
+            foreach (Atributo a in entidades.ElementAt(pos).atributos)
+            {
+                if (a.tipo_Indice == 4)
+                {
+                    indiceA1 = i;
+                }
+                else { i++; }
+            }
+            return indiceA1;
+        }
+
+        /*Se busca en los atributos el que tenga el indice primario arbol*/
+        public int buscaIndiceAsecundario()
+        {
+            int i = 0;
+
+            foreach (Atributo a in entidades.ElementAt(pos).atributos)
+            {
+                if (a.tipo_Indice == 5)
+                {
+                    indiceA2 = i;
+                }
+                else { i++; }
+            }
+            return indiceA2;
         }
 
         /*Se busca en los atributos el que tenga el indice primario*/

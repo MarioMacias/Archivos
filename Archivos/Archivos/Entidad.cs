@@ -28,6 +28,9 @@ namespace Archivos
         /*para los secundarios*/
         public List<Secundario> secundarios = new List<Secundario>();
 
+        /*Para los arboles primarios*/
+        public List<ArbolB> Arboles = new List<ArbolB>();
+
         /*Constructor de una nueva identidad*/
         public Entidad(string sNombre)
         {

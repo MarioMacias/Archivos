@@ -38,6 +38,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.btn_CrearAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_modifAtributo = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTodoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarNombreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTipoDeDatoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarLongitudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.modificarTipoDeIndiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_eliminarAtributo = new System.Windows.Forms.ToolStripMenuItem();
             this.dgv_Atributo = new System.Windows.Forms.DataGridView();
             this.Id_Atributo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -60,11 +65,6 @@
             this.btn_Aceptar = new System.Windows.Forms.Button();
             this.cb_Entidades = new System.Windows.Forms.ComboBox();
             this.btn_aceptarEntidad = new System.Windows.Forms.Button();
-            this.modificarTodoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarNombreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarTipoDeDatoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarLongitudToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.modificarTipoDeIndiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Atributo)).BeginInit();
             this.SuspendLayout();
@@ -103,6 +103,41 @@
             this.btn_modifAtributo.Size = new System.Drawing.Size(129, 20);
             this.btn_modifAtributo.Text = "Modificar el Atributo";
             this.btn_modifAtributo.Click += new System.EventHandler(this.btn_modifAtributo_Click);
+            // 
+            // modificarTodoToolStripMenuItem
+            // 
+            this.modificarTodoToolStripMenuItem.Name = "modificarTodoToolStripMenuItem";
+            this.modificarTodoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTodoToolStripMenuItem.Text = "Modificar todo";
+            this.modificarTodoToolStripMenuItem.Click += new System.EventHandler(this.modificarTodoToolStripMenuItem_Click);
+            // 
+            // modificarNombreToolStripMenuItem
+            // 
+            this.modificarNombreToolStripMenuItem.Name = "modificarNombreToolStripMenuItem";
+            this.modificarNombreToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarNombreToolStripMenuItem.Text = "Modificar nombre";
+            this.modificarNombreToolStripMenuItem.Click += new System.EventHandler(this.modificarNombreToolStripMenuItem_Click);
+            // 
+            // modificarTipoDeDatoToolStripMenuItem
+            // 
+            this.modificarTipoDeDatoToolStripMenuItem.Name = "modificarTipoDeDatoToolStripMenuItem";
+            this.modificarTipoDeDatoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTipoDeDatoToolStripMenuItem.Text = "Modificar tipo de dato";
+            this.modificarTipoDeDatoToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeDatoToolStripMenuItem_Click);
+            // 
+            // modificarLongitudToolStripMenuItem
+            // 
+            this.modificarLongitudToolStripMenuItem.Name = "modificarLongitudToolStripMenuItem";
+            this.modificarLongitudToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarLongitudToolStripMenuItem.Text = "Modificar longitud";
+            this.modificarLongitudToolStripMenuItem.Click += new System.EventHandler(this.modificarLongitudToolStripMenuItem_Click);
+            // 
+            // modificarTipoDeIndiceToolStripMenuItem
+            // 
+            this.modificarTipoDeIndiceToolStripMenuItem.Name = "modificarTipoDeIndiceToolStripMenuItem";
+            this.modificarTipoDeIndiceToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.modificarTipoDeIndiceToolStripMenuItem.Text = "Modificar tipo de indice";
+            this.modificarTipoDeIndiceToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeIndiceToolStripMenuItem_Click);
             // 
             // btn_eliminarAtributo
             // 
@@ -285,7 +320,9 @@
             "0",
             "1",
             "2",
-            "3"});
+            "3",
+            "4",
+            "5"});
             this.cb_Indice.Location = new System.Drawing.Point(380, 418);
             this.cb_Indice.Name = "cb_Indice";
             this.cb_Indice.Size = new System.Drawing.Size(123, 21);
@@ -345,41 +382,6 @@
             this.btn_aceptarEntidad.Text = "Cambiar";
             this.btn_aceptarEntidad.UseVisualStyleBackColor = false;
             this.btn_aceptarEntidad.Click += new System.EventHandler(this.btn_aceptarEntidad_Click);
-            // 
-            // modificarTodoToolStripMenuItem
-            // 
-            this.modificarTodoToolStripMenuItem.Name = "modificarTodoToolStripMenuItem";
-            this.modificarTodoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.modificarTodoToolStripMenuItem.Text = "Modificar todo";
-            this.modificarTodoToolStripMenuItem.Click += new System.EventHandler(this.modificarTodoToolStripMenuItem_Click);
-            // 
-            // modificarNombreToolStripMenuItem
-            // 
-            this.modificarNombreToolStripMenuItem.Name = "modificarNombreToolStripMenuItem";
-            this.modificarNombreToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.modificarNombreToolStripMenuItem.Text = "Modificar nombre";
-            this.modificarNombreToolStripMenuItem.Click += new System.EventHandler(this.modificarNombreToolStripMenuItem_Click);
-            // 
-            // modificarTipoDeDatoToolStripMenuItem
-            // 
-            this.modificarTipoDeDatoToolStripMenuItem.Name = "modificarTipoDeDatoToolStripMenuItem";
-            this.modificarTipoDeDatoToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.modificarTipoDeDatoToolStripMenuItem.Text = "Modificar tipo de dato";
-            this.modificarTipoDeDatoToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeDatoToolStripMenuItem_Click);
-            // 
-            // modificarLongitudToolStripMenuItem
-            // 
-            this.modificarLongitudToolStripMenuItem.Name = "modificarLongitudToolStripMenuItem";
-            this.modificarLongitudToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.modificarLongitudToolStripMenuItem.Text = "Modificar longitud";
-            this.modificarLongitudToolStripMenuItem.Click += new System.EventHandler(this.modificarLongitudToolStripMenuItem_Click);
-            // 
-            // modificarTipoDeIndiceToolStripMenuItem
-            // 
-            this.modificarTipoDeIndiceToolStripMenuItem.Name = "modificarTipoDeIndiceToolStripMenuItem";
-            this.modificarTipoDeIndiceToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.modificarTipoDeIndiceToolStripMenuItem.Text = "Modificar tipo de indice";
-            this.modificarTipoDeIndiceToolStripMenuItem.Click += new System.EventHandler(this.modificarTipoDeIndiceToolStripMenuItem_Click);
             // 
             // FormAtributo
             // 

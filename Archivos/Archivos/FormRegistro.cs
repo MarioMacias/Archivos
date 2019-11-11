@@ -29,19 +29,28 @@ namespace Archivos
         private int indiceCB = -1; //Clave de busqueda
         private bool indice0 = false; //Sin Indice
         private int indice2 = -1; // Secundario
+        private int indiceA1 = -1; //Arbol primario
+        private int indiceA2 = -1; //Arbol secundario
+
 
         private Registro registro;
         private Primario primario;
+        private ArbolB arbolB;
 
         private static bool bandera = false;
         private static bool banderaIDX = false;
+        private static bool banderaIDXar = false;
 
         public FuncionRegistro fr = new FuncionRegistro();
         public FuncionIndicePrimario fip = new FuncionIndicePrimario();
         public FuncionSecundario fs = new FuncionSecundario();
 
         private FileStream Fichero, Fichero2;
-        private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo, nombreArchivoIDXsecundario;
+        private FileStream FicheroArPri, FicheroArSec;
+
+        private bool se = false;
+
+        private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo, nombreArchivoIDXsecundario, nombreArchivoArPri, nombreArchivoArSec;
 
         /*Constructor para la nueva creacion de un registro*/
         public FormRegistro(FormEntidad formEntidad, FileStream Fichero,string nombreArchivo, List<Entidad> entidades, int pos)
@@ -49,6 +58,8 @@ namespace Archivos
             this.nombreArchivo = nombreArchivo;
             this.Fichero = Fichero;
             this.Fichero2 = Fichero;
+            FicheroArPri = Fichero;
+            FicheroArSec = Fichero;
             this.formEntidad = formEntidad;
             this.entidades = entidades;
             this.pos = pos;
@@ -56,6 +67,25 @@ namespace Archivos
             fr.nuevaPosicion = pos;
             fr.lisEntidades = entidades;
             InitializeComponent();
+        }
+
+        private void pruebaArbolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Nodo nodo in entidades[pos].Arboles.Last().getListNodo)
+            {
+                MessageBox.Show("tipo: " + nodo.TipoDeNodo.ToString());
+                MessageBox.Show("Direccion: " + nodo.Direccion.ToString());
+                foreach (ClaveBusqueda cb in nodo.clavesBusqueda)
+                {
+                    if (cb.Clave != null)
+                    {
+                        MessageBox.Show("Direccion cb: " + cb.Direccion.ToString());
+                        MessageBox.Show("clave cb: " + cb.Clave.ToString());
+                    }
+                }
+                
+                MessageBox.Show("Dir siguiente:" + nodo.Direccion_Siguiente.ToString());
+            }
         }
 
         /*Aqui genera el nombre de cada columna y crea los archivos .dat, .idx. Se guarda en la clase de las funciones*/
@@ -108,16 +138,16 @@ namespace Archivos
                     fr.lisEntidades = entidades;
                      fr.asignaDatosDat();
                      bandera = true;
-                     //MessageBox.Show("entro");
                  }
-                //escribirDatosData();
-            } //Mensaje de error
+            } 
 
             //Empezamos a buscar los indices 
             indiceCB = fr.buscaClaveBusqueda();
             indice1 = fr.buscaIndicePrimario();
             indice0 = fr.verificaSinClave();
             indice2 = fr.buscaIndiceSecundario();
+            indiceA1 = fr.buscaIndiceAprimario();
+            indiceA2 = fr.buscaIndiceAsecundario();
 
             //Obtenemos el archivo indice, una vez buscado
             if (indice1 != -1)
@@ -234,6 +264,75 @@ namespace Archivos
                         fs.asignarMemoriaIndice2();
                         entidades = fs.listEntidades;
                     }
+                }
+            }
+
+            if (indiceA1 != -1)
+            {
+                if (entidades[pos].atributos[indiceA1].direccion_Indice == -1) //Verificamos si la direccion de indice es -1, osea que no existe ninguno
+                {
+                    string ex = ".idx";
+                    string aux2 = BitConverter.ToString(entidades[pos].atributos[indiceA1].id_Atributo);
+
+                    nombreArchivoArPri = aux2;
+                    nombreArchivoArPri += ex;
+                    FicheroArPri = new FileStream(nombreArchivoArPri, FileMode.Create);
+
+                    if (indiceA2 != -1)
+                    {
+                        string aux3 = BitConverter.ToString(entidades[pos].atributos[indiceA2].id_Atributo);
+
+                        nombreArchivoArSec = aux3;
+                        nombreArchivoArSec += ex;
+                        FicheroArSec = new FileStream(nombreArchivoArSec, FileMode.Create);
+                        FicheroArSec.Close();
+                    }
+                    banderaIDXar = true;
+                    FicheroArPri.Close();
+                }
+                else
+                {
+                    string ex = ".idx";
+                    string aux2 = BitConverter.ToString(entidades[pos].atributos[indiceA1].id_Atributo);
+
+                    nombreArchivoArPri = aux2;
+                    nombreArchivoArPri += ex;
+                    if (indice2 != -1)
+                    {
+                        string aux3 = BitConverter.ToString(entidades[pos].atributos[indice2].id_Atributo);
+
+                        nombreArchivoArSec = aux3;
+                        nombreArchivoArSec += ex;
+                    }
+
+                   /* //Ya no lee el archivo de nuevo
+                    if (banderaIDX == false)
+                    {
+                        // MessageBox.Show("hola");
+                        if (entidades[pos].primarios.Count == 0 || entidades[pos].primarios.Last().primario_Iteracion == entidades[pos].primarios.Last().indice.Count)
+                        {
+                            banderaIDX = true;
+                            fip.asignaDatosNecesarios(entidades, pos, indice1, Fichero, nombreArchivoIDX, nombreArchivo);
+                            fip.asignaMemoriaDatosIndice();
+                            entidades = fip.dameEntidades;
+                            //fr.asignaDatosDat();
+
+                            if (indice2 != -1)
+                            {
+                                fs.listEntidades = entidades;
+                                fs.posicionEntidad = pos;
+                                fs.posicionIndice2 = indice2;
+                                fs.setNameFichero(Fichero2, nombreArchivoDAT, nombreArchivoIDXsecundario, nombreArchivo); //dando nombre y fichero para guardar los archivos
+
+                                if (entidades[pos].secundarios.Count == 0 || (entidades[pos].secundarios.Last().getIteracion == entidades[pos].secundarios.Last().listSecD.Count))
+                                {
+                                    fs.asignarMemoriaIndice2();
+                                    entidades = fs.listEntidades;
+                                }
+                            }
+
+                        }
+                    }*/
                 }
             }
 
@@ -576,6 +675,73 @@ namespace Archivos
                     MessageBox.Show("Se guardo con un solo indice secundario.");
                 }
             }
+            else if (indiceA1 != -1) //Indice primario B+
+            {
+                if (creaListaObjetos())
+                {
+                    registro = fr.creaNuevoRegistro(datos_registro);
+
+                    //if (fr.Compara(registro)) //Comparar para ingresar uno nuevo en el archivo de datos
+                   // {
+                    //    MessageBox.Show("Ya existe una clave igual.");
+                    //}
+                    //else 
+                    if (entidades[pos].atributos[indiceA1].direccion_Indice != -1)
+                    {
+                        registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
+                        registro.iteraREG++;
+                        entidades[pos].registros.Add(registro);
+                        fr.asignaDatos();
+                        //escribir el archivo 
+                        fr.escribirArchivoDat();
+                        //ordenar
+                        fr.ordenarDatosXcB();
+                        //las direcciones de los datos
+                        fr.direccionNuevaDatos();
+
+                        arbolB.insertar();
+                        entidades = arbolB.listEntidad;
+
+                        //escribir el registro, data
+                        escribirDatosData();
+                        MessageBox.Show("Se guardo correctamente el dato del árbol.");
+                    }
+                    else //es el primero
+                    {
+                        registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
+                        registro.iteraREG++;
+                        entidades[pos].registros.Add(registro);
+                        fr.asignaDatos();
+                        //escribir el archivo 
+                        fr.escribirArchivoDat();
+                        //ordenar
+                        fr.ordenarDatosXcB();
+                        //las direcciones de los datos
+                        fr.direccionNuevaDatos();
+
+                        //Arbol B+
+                        if (entidades[pos].atributos[indiceA1].direccion_Indice == -1) //es la primera hoja
+                        {
+                        //if (!se)
+                        //{
+                            arbolB = new ArbolB(entidades, pos, indiceA1);
+                            entidades[pos].Arboles.Add(arbolB);
+                            arbolB.setFicheroPrimario = FicheroArPri;
+                            arbolB.setNombreArchivo = nombreArchivo;
+                            arbolB.setFichero = Fichero;
+                            arbolB.setNombreArchivoPrimario = nombreArchivoArPri;
+                            //se = true;
+                        }
+                        
+                        arbolB.insertar();
+                        entidades = arbolB.listEntidad;
+                        //}
+                        //escribir el registro, data
+                        escribirDatosData();
+                        MessageBox.Show("Se guardo correctamente");
+                    }
+                }
+            }
             else if (indiceCB != -1)
             {
                 if (creaListaObjetos()) //se crea la lista con todos los objetos a guardar
@@ -614,6 +780,7 @@ namespace Archivos
                     MessageBox.Show("Se guardo correctamente.");
                 }
             }//Sin clave de busqueda
+            
             entidades = fr.lisEntidades;
         }
 
@@ -999,5 +1166,7 @@ namespace Archivos
                 j++;
             }
         }
+
+        /*--------------------------------------Aqui empieza arboles----------------------------------------------*/
     }
 }

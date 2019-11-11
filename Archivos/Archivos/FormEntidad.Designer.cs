@@ -49,6 +49,8 @@
             this.nuevoRegistroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.indiceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.primarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.árbolBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Cabecera = new System.Windows.Forms.Label();
             this.btn_CrearEntidad = new System.Windows.Forms.Button();
             this.btn_Modificar = new System.Windows.Forms.Button();
@@ -57,7 +59,8 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
-            this.secundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indicePrimarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indiceSecundarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -144,7 +147,8 @@
             this.abrirArchivoToolStripMenuItem,
             this.cerrarArchivoToolStripMenuItem,
             this.nuevoRegistroToolStripMenuItem,
-            this.indiceToolStripMenuItem});
+            this.indiceToolStripMenuItem,
+            this.árbolBToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(721, 24);
@@ -202,6 +206,25 @@
             this.primarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.primarioToolStripMenuItem.Text = "Primario";
             this.primarioToolStripMenuItem.Click += new System.EventHandler(this.primarioToolStripMenuItem_Click);
+            // 
+            // secundarioToolStripMenuItem
+            // 
+            this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
+            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.secundarioToolStripMenuItem.Text = "Secundario";
+            this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
+            // 
+            // árbolBToolStripMenuItem
+            // 
+            this.árbolBToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.indicePrimarioBToolStripMenuItem,
+            this.indiceSecundarioBToolStripMenuItem});
+            this.árbolBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.Control;
+            this.árbolBToolStripMenuItem.Name = "árbolBToolStripMenuItem";
+            this.árbolBToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
+            this.árbolBToolStripMenuItem.Text = "Árbol B+";
             // 
             // lbl_Cabecera
             // 
@@ -306,14 +329,22 @@
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
             // 
-            // secundarioToolStripMenuItem
+            // indicePrimarioBToolStripMenuItem
             // 
-            this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
-            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.secundarioToolStripMenuItem.Text = "Secundario";
-            this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
+            this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
+            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
+            this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
+            // 
+            // indiceSecundarioBToolStripMenuItem
+            // 
+            this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
+            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
             // 
             // FormEntidad
             // 
@@ -372,6 +403,9 @@
         private System.Windows.Forms.ToolStripMenuItem indiceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem primarioToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem secundarioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem árbolBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indicePrimarioBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem indiceSecundarioBToolStripMenuItem;
     }
 }
 
