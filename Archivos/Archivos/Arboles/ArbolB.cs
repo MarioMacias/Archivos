@@ -12,9 +12,10 @@ namespace Archivos
     {
         private List<Entidad> entidades;
         private List<Nodo> Arbol = new List<Nodo>();
+        private List<Nodo> Hojas = new List<Nodo>();
+        private List<Nodo> Intermedios = new List<Nodo>();
         private ClaveBusqueda claveB;
-        private Nodo nodo;
-        private Nodo nodoAux;
+        private Nodo nodo, nodoAux, nodoAux2;
         private Nodo raiz;
         private int grado = 4;
         private int mitad = 3;
@@ -30,7 +31,6 @@ namespace Archivos
         BinaryReader binaryReader;
         bool claux = false;
 
-
         public ArbolB(List<Entidad> entidades, int pos, int indiceA1)
         {
             this.entidades = entidades;
@@ -38,12 +38,14 @@ namespace Archivos
             this.indiceA1 = indiceA1;
         }
 
+        /*inserta una nueva clave*/
         public void insertar()
         {
+            //MessageBox.Show("total; " + Arbol.Count);
             if (Arbol.Count == 0) //No existe raiz, se crea la primera hoja
             {
                 nuevoNodo('H');
-                if (nuevaClabeBusqueda() == false) //no se repite
+                if (nuevaClabeBusqueda('H') == false) //no se repite
                 {
                     for (int i = 0; i < grado; i++)
                     {
@@ -60,10 +62,11 @@ namespace Archivos
             }
             else if (Arbol.Count == 1) //Si aun no se crea la raiz, pero ya existe una hoja
             {
-                if (totalClaves() <= grado)
+                if (totalClaves(Arbol.First()) <= grado)
                 {
-                    if (nuevaClabeBusqueda() == false)
+                    if (nuevaClabeBusqueda('H') == false)
                     {
+                        //MessageBox.Show("igual1claveB dire: " + claveB.Direccion.ToString() + " obj: " + claveB.Clave.ToString());
                         for (int i = 0; i < grado; i++)
                         {
                             if (Arbol.First().clavesBusqueda[i].Direccion == -1)
@@ -79,15 +82,13 @@ namespace Archivos
                         }
                         else
                         {
-                            Arbol.First().clavesBusqueda = Arbol.First().clavesBusqueda.OrderBy(x => x.Clave.ToString()).ToList();
+                            Arbol.First().clavesBusqueda = Arbol.First().clavesBusqueda.OrderBy(x => x.Clave.ToString() == "-1").ToList();
                         }
-                        
-                        escribeArchivoIDX();
                     }
                 }
                 else //se debe separar y crear una raiz
                 {
-                    if (nuevaClabeBusqueda() == false)
+                    if (nuevaClabeBusqueda('H') == false)
                     {
                         separaNodo();
                     }
@@ -95,26 +96,66 @@ namespace Archivos
             }
             else if(Arbol.Count > 1) //Si ya existe una raiz
             {
-                if (nuevaClabeBusqueda() == false)
+                if (nuevaClabeBusqueda('H') == false)
                 {
-                    if (buscarNodo()) //Si se encontro el nodo
+                    posNodo = buscarNodo();
+                    //MessageBox.Show("posNodo: " + posNodo);
+
+                    ///Cuando se encuentre tengo que verificar si existe espacio en el nodo
+                    if (totalClaves(Arbol[posNodo]) <= grado)
                     {
-                        ///Cuando se encuentre tengo que verificar si existe espacio en el nodo
                         ///Si hay se inserta y listo
-                        ///si no existe, se separa del nodo
-                        ///verificando indices que no he creado.
+                        MessageBox.Show("Agrega sin separar, nodo: " + Arbol[posNodo].Direccion.ToString());
+                        agregaClaveBusquedaAlNodo(Arbol[posNodo]);
                     }
                     else
                     {
-                        MessageBox.Show("No se encontro el nodo", "ERROR");
+                        ///si no existe, se separa del nodo
+                        ///verificando indices que no he creado.
+                        separaNodoCon(Arbol[posNodo]);
+                        MessageBox.Show("separo el nodo con");
+                    }
+                }
+            }
+            escribeArchivoIDX();
+        }
+
+        /*Agrega y pordena las claves de busquedas de un nodo en especifico*/
+        private void agregaClaveBusquedaAlNodo(Nodo nod)
+        {
+            foreach (Nodo no in Arbol)
+            {
+                if (no == nod)
+                {
+                    for (int i = 0; i < grado; i++)
+                    {
+                        if (no.clavesBusqueda[i].Direccion == -1)
+                        {
+                           // MessageBox.Show("clave: " + no.clavesBusqueda[i - 1].Clave + " dire: " + no.clavesBusqueda[i - 1].Direccion);
+                            //MessageBox.Show("claveB: " + claveB.Clave + " direB: " + claveB.Direccion);
+                            no.clavesBusqueda[i].Clave = claveB.Clave;
+                            no.clavesBusqueda[i].Direccion = claveB.Direccion;
+                            
+                            if (entidades[pos].atributos[indiceA1].tipo_Dato == 'E')
+                            {
+                                no.clavesBusqueda = no.clavesBusqueda.OrderBy(x => Convert.ToInt32(x.Clave)).ToList();
+                            }
+                            else
+                            {
+                                no.clavesBusqueda = no.clavesBusqueda.OrderBy(x => x.Clave.ToString()).ToList();
+                            }
+                            
+                            break;
+                        }
                     }
                 }
             }
         }
-
-        private bool buscarNodo()
+        
+        /*Busca el el nodo, utilizando la ultima clave de busqueda creada*/
+        private int buscarNodo()
         {
-            bool res = false;
+            int res = 0;
             long direccion = -1;
 
             for (int i = 0; i < raiz.clavesBusqueda.Count; i++)
@@ -123,13 +164,45 @@ namespace Archivos
                 {
                     if (Convert.ToInt32(raiz.clavesBusqueda[i].Clave) != -1)
                     {
-                        if (Convert.ToInt32(raiz.clavesBusqueda[i].Clave) >= Convert.ToInt32(claveB.Clave))
+                        MessageBox.Show("raiz: " + raiz.clavesBusqueda[i].Clave.ToString() + " clave: " + claveB.Clave.ToString());
+                        if (Convert.ToInt32(raiz.clavesBusqueda[i].Clave) <= Convert.ToInt32(claveB.Clave))
                         {
                             direccion = raiz.clavesBusqueda[i].DireccionDerecha;
+                            MessageBox.Show("derecha: " + direccion.ToString());
                         }
                         else
                         {
                             direccion = raiz.clavesBusqueda[i].DireccionIzquierda;
+                            MessageBox.Show("izquierda: " + direccion.ToString());
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    if (Convert.ToString(raiz.clavesBusqueda[i].Clave) != "-1")
+                    {
+                        MessageBox.Show("raiz: " + raiz.clavesBusqueda[i].Clave.ToString() + " clave: " + claveB.Clave.ToString());
+                        //if (Convert.ToString(raiz.clavesBusqueda[i].Clave) <= Convert.ToString(claveB.Clave))
+                        List<string> palabra = new List<string>();
+                        palabra.Add(raiz.clavesBusqueda[i].Clave.ToString());
+                        palabra.Add(claveB.Clave.ToString());
+                        palabra = palabra.OrderBy(p => p).ToList();
+
+                        if (palabra[1].CompareTo(claveB.Clave.ToString()) == 0)
+                        {
+                            direccion = raiz.clavesBusqueda[i].DireccionDerecha;
+                            MessageBox.Show("derecha: " + direccion.ToString());
+                        }
+                        else
+                        {
+                            direccion = raiz.clavesBusqueda[i].DireccionIzquierda;
+                            MessageBox.Show("izquierda: " + direccion.ToString());
+                            break;
                         }
                     }
                     else
@@ -138,23 +211,21 @@ namespace Archivos
                     }
                 }
             }
-
+            
             foreach (Nodo nod in Arbol)
             {
-                if (nodo.TipoDeNodo == 'H')
+                if (nod.TipoDeNodo == 'H')
                 {
-                    if (nodo.Direccion == direccion)
-                    {
-                        nodoAux = nod;
-                        res = true;
+                    //MessageBox.Show("dirnod: " + nod.Direccion + " dir: " + direccion);
+                    if (nod.Direccion == direccion) //cuando sea la misma direccion retornara el numero del nodo
                         break;
-                    }
                 }
+                res++;
             }
-
             return res;
         }
 
+        /*Cambia la direccion de indice del atributo del arbol primario*/
         private void asignaMemoriaAtributo()
         {
             Fichero = File.Open(nombreArchivo, FileMode.Open);
@@ -172,20 +243,322 @@ namespace Archivos
             Fichero.Close();
         }
 
-        private int totalClaves()
+        /*Devuelve el numero total de claves del nodo*/
+        private int totalClaves(Nodo nod)
         {
             int count = grado + 1;
             for (int i = 0; i < grado; i++)
             {
-                if (Arbol.First().clavesBusqueda[i].Direccion == -1)
+                if (nod.TipoDeNodo == 'H')
                 {
-                    count = i + 1;
-                    break;
+                    if (nod.clavesBusqueda[i].Direccion == -1)
+                    {
+                        count = i + 1;
+                        break;
+                    }
+                }else if (nod.TipoDeNodo == 'R')
+                {
+                    if (nod.clavesBusqueda[i].DireccionDerecha == -1)
+                    {
+                        count = i + 1;
+                        break;
+                    }
                 }
+                
             }
             return count;
         }
 
+        /*Este separa el nodo chido, mandando el nodo en cuestion*/
+        private void separaNodoCon(Nodo no)
+        {
+            bool direccion = false; //Si es falso va a la izquierda si es true va a la derecha
+           
+            direccion = ladoNodo(no);
+
+            nuevoNodo('H');
+
+            foreach (Nodo n in Arbol)
+            {
+                if (n.Direccion == no.Direccion)
+                {
+                    n.Direccion_Siguiente = Arbol.Last().Direccion;
+                    Nodo res = splitIt(n, direccion); //se separa el nodo y devuelve el nodo nuevo creado
+                    //agregar a la raiz, la clave
+                    agregaClaveRaiz(res);
+                    break;
+                }
+            }
+        }
+
+        /*Separa el nodo raiz para convertir indices*/
+        private void separaNodoRaiz()
+        {
+            Nodo intermedio1, intermedio2;
+            intermedio1 = raiz; //copia la raiz
+            nuevoNodo('I');
+            intermedio2 = Arbol.Last(); // el ultimo nodo creado I es el intermedio 2
+
+            foreach (Nodo n in Arbol)
+            {
+                if (n == intermedio1) //si es la raiz vieja
+                {
+                    n.TipoDeNodo = 'I'; //Se cambia a intermedio
+                    break;
+                }
+            }
+
+            //intermedio2.clavesBusqueda.First().Clave = nodoAux.clavesBusqueda.First().Clave;
+            //intermedio2.clavesBusqueda.First().Direccion = nodoAux.Direccion;
+
+            Nodo[] noA = splitRoot(intermedio1, intermedio2);
+            nuevoNodo('R');
+
+            for (int i = 0; i < Arbol.Count; i++)
+            {
+                if (Arbol[i].Direccion == noA[0].Direccion) // el que antes era la raiz
+                {
+                    Arbol[i] = noA[0];
+                }
+
+                if (Arbol[i].Direccion == noA[1].Direccion) // el intermedio
+                {
+                    Arbol[i] = noA[1];
+                }
+            }
+            Arbol.Last().clavesBusqueda[0].Clave = noA[1].clavesBusqueda.First().Clave;
+            Arbol.Last().clavesBusqueda[0].DireccionIzquierda = noA[0].Direccion;
+            Arbol.Last().clavesBusqueda[0].DireccionDerecha = noA[1].Direccion;
+        }
+
+        /*Saber si el dato a insertar se ira con el nuevo nodo o se queda en el otro*/
+        private bool ladoNodo(Nodo no)
+        {
+            bool direccion = false;
+            if (entidades[pos].atributos[indiceA1].tipo_Dato == 'E')
+            {
+                if (Convert.ToInt32(claveB.Clave) >= Convert.ToInt32(no.clavesBusqueda[mitad].Clave))
+                {
+                    direccion = true;
+                }
+                else
+                {
+                    direccion = false;
+                }
+            }
+            else
+            {
+                //string
+            }
+
+            return direccion;
+        }
+
+        /*Agregar la clave a la raiz, una vez que se haya separado.*/
+        private void agregaClaveRaiz(Nodo nod)
+        {
+            ///si no existe, se separa del nodo
+            ///verificando indices que no he creado.
+            int gradoTotal = totalClaves(raiz);
+
+            if (gradoTotal <= grado) //aun hay espacio en el nodo
+            {
+                foreach (Nodo n in Arbol)
+                {
+                    if (n.TipoDeNodo == 'R')
+                    {
+                        for (int i = 0; i < grado; i++) //Agrego la ultima clave que se asigna
+                        {
+                            if (n.clavesBusqueda[i].DireccionIzquierda == -1)
+                            {
+                                if (i == 0)//no estoy seguro, la primera raiz no la guardo de aqui
+                                {
+                                    n.clavesBusqueda[i].Clave = nod.clavesBusqueda.First().Clave;
+                                    n.clavesBusqueda[i].DireccionIzquierda = nodo.clavesBusqueda.First().DireccionIzquierda;
+                                    n.clavesBusqueda[i].DireccionDerecha = nod.clavesBusqueda.First().DireccionDerecha;
+                                }
+                                else
+                                {
+                                    n.clavesBusqueda[i].Clave = nod.clavesBusqueda.First().Clave;
+                                    n.clavesBusqueda[i].DireccionIzquierda = n.clavesBusqueda[i - 1].DireccionDerecha;
+                                    n.clavesBusqueda[i].DireccionDerecha = nod.Direccion;
+                                }
+                                break;
+                            }
+                        }
+                        raiz = n; //actualizo el nodo
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                nodoAux = nod; //copia del nodo hoja que se separo
+                
+                separaNodoRaiz();
+
+                // Se crean las dos nuevas
+                MessageBox.Show("Se crean los indices");
+                //se hacen los indices
+            }
+        }
+
+        /*Separa los nodos, una vez agregado el nuevo nodo a la lista de arbol*/
+        private Nodo splitIt(Nodo nodoA, bool lado)
+        {
+            int j = 0;
+            bool bandera = false;
+            Nodo res = null;
+            for (int i = mitad - 1; i < grado; i++) //Las agrego al nuevo nodo
+            {
+                Arbol.Last().clavesBusqueda[j].Clave = nodoA.clavesBusqueda[i].Clave;
+                Arbol.Last().clavesBusqueda[j].Direccion = nodoA.clavesBusqueda[i].Direccion;
+                j++;
+            }
+
+            foreach (Nodo nA in Arbol)
+            {
+                if (nA.Direccion == nodoA.Direccion)
+                {
+                    for (int i = mitad - 1; i < grado; i++) //Las quito del nodo
+                    {
+                        nA.clavesBusqueda[i].Clave = -1;
+                        nA.clavesBusqueda[i].Direccion = -1;
+                    }
+                    nodoAux2 = nA;
+                    break;
+                }
+            }
+            
+            //Se agrega la ultima clave dependiendo del lado correspondiente
+            for (int i = 0; i < grado; i++) //Agrego la ultima clave que se asigna
+            {
+                if (lado)//derecha
+                {
+                    if (Arbol.Last().clavesBusqueda[i].Direccion == -1)
+                    {
+                        Arbol.Last().clavesBusqueda[i].Clave = claveB.Clave;
+                        Arbol.Last().clavesBusqueda[i].Direccion = claveB.Direccion;
+
+                        for (int k = 0; k < Arbol.Count; k++)
+                        {
+                            if (Arbol.Last() == Arbol[k])
+                            {
+                                //MessageBox.Show("clave con arbol[k]: " + Arbol[k].clavesBusqueda[0].Clave.ToString());
+                                //MessageBox.Show("clave con arbol.last: " + Arbol.Last().clavesBusqueda[0].Clave.ToString());
+                                Arbol[k] = ordenaNodo(Arbol[k]);
+                                res = Arbol[k];
+                                //MessageBox.Show("clave con res adentro: " + res.clavesBusqueda[0].Clave.ToString());
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+                else //izquierda creo que esta mal
+                {
+                    foreach (Nodo nA in Arbol)
+                    {
+                        if (nA.Direccion == nodoA.Direccion)
+                        {
+                            if (nA.clavesBusqueda[i].Direccion == -1)
+                            {
+                                nA.clavesBusqueda[i].Clave = claveB.Clave;
+                                nA.clavesBusqueda[i].Direccion = claveB.Direccion;
+
+                                for (int k = 0; k < Arbol.Count; k++)
+                                {
+                                    if (nA == Arbol[k])
+                                    {
+                                        Arbol[k] = ordenaNodo(Arbol[k]);
+                                        res = Arbol[k];
+                                        break;
+                                    }
+                                }
+                                bandera = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (bandera)
+                    {
+                        break;
+                    }
+                }
+            }
+            return res;
+        }
+
+        /*Separa los nodos, mandando la raiz y el indice*/
+        private Nodo[] splitRoot(Nodo nodoR, Nodo nodoI)
+        {
+            int j = 0;
+            Nodo[] res = new Nodo[2];
+            for (int i = mitad - 1; i < grado; i++) //Las agrego al nuevo nodo
+            {
+                nodoI.clavesBusqueda[j].Clave = nodoR.clavesBusqueda[i].Clave;
+                nodoI.clavesBusqueda[j].DireccionDerecha = nodoR.clavesBusqueda[i].DireccionDerecha;
+                nodoI.clavesBusqueda[j].DireccionIzquierda = nodoR.clavesBusqueda[i].DireccionIzquierda;
+                j++;
+            }
+
+            foreach (Nodo nA in Arbol)
+            {
+                if (nA.Direccion == nodoR.Direccion)
+                {
+                    for (int i = mitad - 1; i < grado; i++) //Las quito del nodo
+                    {
+                        nA.clavesBusqueda[i].Clave = -1;
+                        nA.clavesBusqueda[i].DireccionDerecha = -1;
+                        nA.clavesBusqueda[i].DireccionIzquierda = -1;
+                    }
+                    break;
+                }
+            }
+
+            //Se agrega la ultima clave dependiendo del lado correspondiente
+            for (int i = 0; i < grado; i++) //Agrego la ultima clave que se asigna
+            {
+                if (nodoI.clavesBusqueda[i].Direccion == -1)
+                {
+                    nodoI.clavesBusqueda[i].Clave = nodoAux.clavesBusqueda.First().Clave;
+                    nodoI.clavesBusqueda[i].DireccionDerecha = nodoAux.Direccion;
+                    nodoI.clavesBusqueda[i].DireccionIzquierda = nodoAux2.Direccion;
+
+                    for (int k = 0; k < Arbol.Count; k++)
+                    {
+                        if (nodoI == Arbol[k])
+                        {
+                            Arbol[k] = ordenaNodo(Arbol[k]);
+                            res[0] = nodoR;
+                            res[1] = nodoI;
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+
+            return res;
+        }
+
+        /*Ordena el nodo mandado*/
+        private Nodo ordenaNodo(Nodo ordeN)
+        {
+            if (entidades[pos].atributos[indiceA1].tipo_Dato == 'E')
+            {
+                ordeN.clavesBusqueda = ordeN.clavesBusqueda.OrderBy(x => Convert.ToInt32(x.Clave) == -1).ToList(); //los ordeno
+            }
+            else
+            {
+                ordeN.clavesBusqueda = ordeN.clavesBusqueda.OrderBy(x => x.Clave.ToString()).ToList(); //los ordeno
+            }
+
+            return ordeN;
+        }
+
+        /*Separa el primer nodo*/
         private void separaNodo()
         {
             if (Arbol.Count == 1) //Primer nodo, creacion de primera raiz
@@ -201,7 +574,15 @@ namespace Archivos
                 }
                 else
                 {
-                    //string
+                    List<string> palabra = new List<string>();
+                    palabra.Add(Arbol.First().clavesBusqueda[mitad].Clave.ToString());
+                    palabra.Add(claveB.Clave.ToString());
+                    palabra = palabra.OrderBy(p => p).ToList();
+
+                    if (palabra[1].CompareTo(claveB.Clave.ToString()) == 0)
+                    {
+                        posi = true;
+                    }
                 }
                 
                 nuevoNodo('H');
@@ -247,11 +628,11 @@ namespace Archivos
                     //Creamos la raiz
                     nuevoNodo('R');
                     //nodo.clavesBusqueda.Add(cb);
-                    if (!nuevaClabeBusqueda())
+                    if (!nuevaClabeBusqueda('R'))
                     {
                         for (int i = 0; i < grado; i++) //Agrego la ultima clave que se asigna
                         {
-                            if (Arbol.Last().clavesBusqueda[i].Direccion == -1)
+                            if (Arbol.Last().clavesBusqueda[i].DireccionIzquierda == -1)
                             {
                                 Arbol.Last().clavesBusqueda[i].Clave = claveB.Clave;
                                 Arbol.Last().clavesBusqueda[i].DireccionIzquierda = claveB.DireccionIzquierda;
@@ -260,18 +641,13 @@ namespace Archivos
                             }
                         }
                         raiz = Arbol.Last();
-                        entidades[pos].atributos[indiceA1].direccion_Indice = Arbol.Last().clavesBusqueda.First().Direccion;
-                        asignaMemoriaAtributo();
-                        escribeArchivoIDX();
                     }
                 }
             }
-            else if (Arbol.Count > 1) //Si ya se creo la raiz
-            {
-
-            }
+            escribeArchivoIDX();
         }
 
+        /*Guarda todo los valores de principio a fin, sobrescritura*/
         private void escribeArchivoIDX()
         {
             FicheroArPri = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
@@ -326,14 +702,16 @@ namespace Archivos
 
                         binaryWriter.Write(entero);
                     }
-
-                    if (no.TipoDeNodo == 'R' && claux == false)
+                    if (no.TipoDeNodo == 'R' || no.TipoDeNodo == 'I')
                     {
-                        if (cb.DireccionIzquierda != -1)
+                        if (claux == false)
                         {
-                            //MessageBox.Show("derehca: " + cb.DireccionDerecha.ToString());
-                            binaryWriter.Write(cb.DireccionDerecha);
-                            claux = true;
+                            if (cb.DireccionIzquierda != -1)
+                            {
+                                //MessageBox.Show("derehca: " + cb.DireccionDerecha.ToString());
+                                binaryWriter.Write(cb.DireccionDerecha);
+                                claux = true;
+                            }
                         }
                     }
                 }
@@ -347,14 +725,26 @@ namespace Archivos
             FicheroArPri.Close();
         }
 
+        /*Crea un nodo con su respectiva direccion y de un cierto tipo dado*/
         private void nuevoNodo(char tipo)
         {
             nodo = new Nodo(tipo, getDireccionNodo());
             nodo = asignaMemoriaNodo(tipo, nodo);
+            switch (tipo)
+            {
+                case 'H':
+                    Hojas.Add(nodo);
+                    break;
+                case 'I':
+                    Intermedios.Add(nodo);
+                    break;
+            }
+
             Arbol.Add(nodo);
             escribeArchivoIDX();
         }
 
+        /*Crea el espacio adecuado del nodo 65*/
         private Nodo asignaMemoriaNodo(char tipo, Nodo nod)
         {
             if (tipo == 'H')
@@ -365,7 +755,7 @@ namespace Archivos
                     nod.clavesBusqueda.Add(cb);
                 }
             }
-            else if (tipo == 'R')
+            else if (tipo == 'R' || tipo == 'I')
             {
                 for (int i = 0; i < grado; i++)
                 {
@@ -378,32 +768,28 @@ namespace Archivos
             return nod;
         }
 
-        private bool nuevaClabeBusqueda()
+        private bool nuevaClabeBusqueda(char tipo)
         {
             bool repite = false;
 
             long direc = entidades[pos].registros.Last().dir_Registro;
             object obj = entidades[pos].registros.Last().element_Registro[indiceA1];
 
-            if (entidades[pos].Arboles.Last().Arbol.Count == 0)
+            switch (tipo)
             {
-                claveB = new ClaveBusqueda(direc, obj);
-                return repite;
+                case 'H':
+                    claveB = new ClaveBusqueda(direc, obj);
+                    break;
+                case 'R':
+                    claveB = new ClaveBusqueda(Arbol[posNodo].Direccion, Arbol[posNodo + 1].Direccion, Arbol[posNodo + 1].clavesBusqueda.First().Clave);
+                    break;
             }
-            
-            if (Arbol.Last().TipoDeNodo == 'R')
-            {
-                claveB = new ClaveBusqueda(Arbol[posNodo].Direccion, Arbol[posNodo + 1].Direccion, Arbol[posNodo + 1].clavesBusqueda.First().Clave);
-                
-            }
-            else
-            {
-                claveB = new ClaveBusqueda(direc, obj);
-            }
-            
+
+            //MessageBox.Show("claveB dire: " + direc.ToString() + " obj: " + obj.ToString());
             return repite;
         }
 
+        /*Direccion del nodo al crear en el archivo*/
         private long getDireccionNodo()
         {
             FicheroArPri = File.Open(nombreArchivoIDX, FileMode.Open);
@@ -412,6 +798,7 @@ namespace Archivos
             return direc;
         }
 
+        /*GET AND SET*/
         public FileStream setFichero
         {
             set { Fichero = value; }

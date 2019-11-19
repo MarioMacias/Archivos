@@ -188,6 +188,44 @@ namespace Archivos
             return res;
         }
 
+        /*Buscar si la clave de busqueda ya existe en el arbol primario*/
+        public bool ComparaArbol(Registro regis, int indiceAr)
+        {
+            bool res = false;
+
+            string vs2 = regis.element_Registro[indiceAr].ToString(); //tipo object
+
+            for (int i = 0; i < entidades[pos].Arboles.Last().getListNodo.Count; ++i) //recorrer todas las iteraciones
+            {
+                for (int j = 0; j < entidades[pos].Arboles.Last().getListNodo[i].clavesBusqueda.Count; ++j)
+                {
+                    string vs = entidades[pos].Arboles.Last().getListNodo[i].clavesBusqueda[j].Clave.ToString(); //tipo object
+
+                    if (entidades[pos].atributos[indiceAr].tipo_Dato == 'C') //Si es de tipo char
+                    {
+                        if (vs == vs2)
+                        {
+                            res = true;
+                        }
+                    }
+                    else
+                    {
+                        if (entidades[pos].atributos[indiceAr].tipo_Dato == 'E') //Tipo de entero
+                        {
+                            int entero = int.Parse(vs);
+                            int entero2 = int.Parse(vs2);
+
+                            if (entero == entero2)
+                            {
+                                res = true;
+                            }
+                        }
+                    }
+                }
+            }
+            return res;
+        }
+
         /*Asignar los valores en el archivo.*/
         public void asignaDatos()
         {

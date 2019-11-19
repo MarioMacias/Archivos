@@ -35,7 +35,7 @@ namespace Archivos
 
         private Registro registro;
         private Primario primario;
-        private ArbolB arbolB;
+        private static ArbolB arbolB = null;
 
         private static bool bandera = false;
         private static bool banderaIDX = false;
@@ -48,7 +48,7 @@ namespace Archivos
         private FileStream Fichero, Fichero2;
         private FileStream FicheroArPri, FicheroArSec;
 
-        private bool se = false;
+        private static bool se = false;
 
         private string nombreArchivoDAT, nombreArchivoIDX, nombreArchivo, nombreArchivoIDXsecundario, nombreArchivoArPri, nombreArchivoArSec;
 
@@ -86,6 +86,10 @@ namespace Archivos
                 
                 MessageBox.Show("Dir siguiente:" + nodo.Direccion_Siguiente.ToString());
             }
+        }
+
+        private void FormRegistro_KeyPress(object sender, KeyPressEventArgs e)
+        {
         }
 
         /*Aqui genera el nombre de cada columna y crea los archivos .dat, .idx. Se guarda en la clase de las funciones*/
@@ -340,6 +344,10 @@ namespace Archivos
             fr.setNameFichero(Fichero, nombreArchivoDAT, nombreArchivoIDX, nombreArchivo); //dando nombre y fichero para guardar los archivos
         }
 
+        private void dgv_Registro_KeyPress(object sender, KeyPressEventArgs e)
+        {
+        }
+
         /*Metodo para poder regresar a la tabla de entidades*/
         private void btn_regresaEntidad_Click(object sender, EventArgs e)
         {
@@ -351,6 +359,11 @@ namespace Archivos
 
         /*Evento para agregar la nueva */
         private void agregarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            guardar();
+        }
+
+        private void guardar()
         {
             fr.lisEntidades = entidades; //pasando la lista de entidades al primario
             fs.listEntidades = entidades; //pasando la lista de entidades al funcion secundario
@@ -453,8 +466,8 @@ namespace Archivos
                             entidades = fr.lisEntidades;
                             //escribir el registro, data
                             escribirDatosData();
-                            if(indice2 == -1)
-                            MessageBox.Show("Se guardo correctamente.");
+                            if (indice2 == -1)
+                                MessageBox.Show("Se guardo correctamente.");
                         }
                     } //si ya existe el archivo
                     else //Si no existe el archivo de indice, se agregara el primero, osea que en los atributos esta en -1
@@ -547,8 +560,8 @@ namespace Archivos
                             entidades = fs.listEntidades;
                             MessageBox.Show("Se guardo correctamente con indice 3 y 2.");
                         }
-                        if(indice2 == -1)
-                        MessageBox.Show("Se guardo correctamente.");
+                        if (indice2 == -1)
+                            MessageBox.Show("Se guardo correctamente.");
                     }
                 }
                 else
@@ -619,7 +632,7 @@ namespace Archivos
                     {
                         int n = 0;
                         n = fs.numeroDeIteracion(entidades[pos].atributos[indice2].longitud_Tipo);
-                        
+
                         Secundario s = new Secundario(-1);
 
                         entidades[pos].secundarios.Add(s);
@@ -680,14 +693,15 @@ namespace Archivos
                 if (creaListaObjetos())
                 {
                     registro = fr.creaNuevoRegistro(datos_registro);
-
-                    //if (fr.Compara(registro)) //Comparar para ingresar uno nuevo en el archivo de datos
-                   // {
-                    //    MessageBox.Show("Ya existe una clave igual.");
-                    //}
-                    //else 
+                    
                     if (entidades[pos].atributos[indiceA1].direccion_Indice != -1)
                     {
+                        if (fr.ComparaArbol(registro, indiceA1)) //Comparar para ingresar uno nuevo en el archivo de datos
+                        {
+                            MessageBox.Show("Ya existe una clave igual.");
+                            return;
+                        }
+
                         registro = fr.creaNuevoRegistro(datos_registro); //creamos el registro guardando los datos
                         registro.iteraREG++;
                         entidades[pos].registros.Add(registro);
@@ -718,25 +732,17 @@ namespace Archivos
                         fr.ordenarDatosXcB();
                         //las direcciones de los datos
                         fr.direccionNuevaDatos();
-
-                        //Arbol B+
-                        if (entidades[pos].atributos[indiceA1].direccion_Indice == -1) //es la primera hoja
-                        {
-                        //if (!se)
-                        //{
-                            arbolB = new ArbolB(entidades, pos, indiceA1);
-                            entidades[pos].Arboles.Add(arbolB);
-                            arbolB.setFicheroPrimario = FicheroArPri;
-                            arbolB.setNombreArchivo = nombreArchivo;
-                            arbolB.setFichero = Fichero;
-                            arbolB.setNombreArchivoPrimario = nombreArchivoArPri;
-                            //se = true;
-                        }
                         
+                        arbolB = new ArbolB(entidades, pos, indiceA1);
+                        entidades[pos].Arboles.Add(arbolB);
+                        arbolB.setFicheroPrimario = FicheroArPri;
+                        arbolB.setNombreArchivo = nombreArchivo;
+                        arbolB.setFichero = Fichero;
+                        arbolB.setNombreArchivoPrimario = nombreArchivoArPri;
+                        MessageBox.Show("nuevo arbol");
                         arbolB.insertar();
                         entidades = arbolB.listEntidad;
-                        //}
-                        //escribir el registro, data
+
                         escribirDatosData();
                         MessageBox.Show("Se guardo correctamente");
                     }
@@ -780,7 +786,7 @@ namespace Archivos
                     MessageBox.Show("Se guardo correctamente.");
                 }
             }//Sin clave de busqueda
-            
+
             entidades = fr.lisEntidades;
         }
 
@@ -925,7 +931,7 @@ namespace Archivos
                 if (indice1 != -1) //Si existe un indice primairo
                 {
                     string vs2 = entidades[pos].registros[elemento].element_Registro[indice1].ToString();
-                    MessageBox.Show("num_ elementos: " + entidades[pos].primarios.Count);
+                    //MessageBox.Show("num_ elementos: " + entidades[pos].primarios.Count);
                     for (int i = 0; i < entidades[pos].primarios.Last().primario_Iteracion; ++i)
                     {
                         string vs = entidades[pos].primarios.Last().indice[i].IndiceP_Clave.ToString();

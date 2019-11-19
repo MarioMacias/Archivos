@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRegistro));
             this.dgv_Registro = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.agregarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modificarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btn_regresaEntidad = new System.Windows.Forms.Button();
             this.pruebaArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btn_regresaEntidad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -43,11 +45,28 @@
             // dgv_Registro
             // 
             this.dgv_Registro.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgv_Registro.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgv_Registro.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_Registro.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv_Registro.Location = new System.Drawing.Point(12, 37);
             this.dgv_Registro.Name = "dgv_Registro";
             this.dgv_Registro.Size = new System.Drawing.Size(806, 342);
             this.dgv_Registro.TabIndex = 0;
+            this.dgv_Registro.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgv_Registro_KeyPress);
             // 
             // menuStrip1
             // 
@@ -87,6 +106,13 @@
             this.eliminarToolStripMenuItem.Text = "Eliminar";
             this.eliminarToolStripMenuItem.Click += new System.EventHandler(this.eliminarToolStripMenuItem_Click);
             // 
+            // pruebaArbolToolStripMenuItem
+            // 
+            this.pruebaArbolToolStripMenuItem.Name = "pruebaArbolToolStripMenuItem";
+            this.pruebaArbolToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+            this.pruebaArbolToolStripMenuItem.Text = "prueba arbol";
+            this.pruebaArbolToolStripMenuItem.Click += new System.EventHandler(this.pruebaArbolToolStripMenuItem_Click);
+            // 
             // btn_regresaEntidad
             // 
             this.btn_regresaEntidad.AutoSize = true;
@@ -103,13 +129,6 @@
             this.btn_regresaEntidad.UseVisualStyleBackColor = false;
             this.btn_regresaEntidad.Click += new System.EventHandler(this.btn_regresaEntidad_Click);
             // 
-            // pruebaArbolToolStripMenuItem
-            // 
-            this.pruebaArbolToolStripMenuItem.Name = "pruebaArbolToolStripMenuItem";
-            this.pruebaArbolToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
-            this.pruebaArbolToolStripMenuItem.Text = "prueba arbol";
-            this.pruebaArbolToolStripMenuItem.Click += new System.EventHandler(this.pruebaArbolToolStripMenuItem_Click);
-            // 
             // FormRegistro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -124,6 +143,7 @@
             this.Name = "FormRegistro";
             this.Text = "Registros de la entidad";
             this.Load += new System.EventHandler(this.FormRegistro_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FormRegistro_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();

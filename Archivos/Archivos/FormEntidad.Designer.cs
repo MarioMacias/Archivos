@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -51,6 +52,8 @@
             this.primarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.secundarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.árbolBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indicePrimarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.indiceSecundarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbl_Cabecera = new System.Windows.Forms.Label();
             this.btn_CrearEntidad = new System.Windows.Forms.Button();
             this.btn_Modificar = new System.Windows.Forms.Button();
@@ -59,8 +62,6 @@
             this.btn_Atributo = new System.Windows.Forms.Button();
             this.lb_atributo = new System.Windows.Forms.Label();
             this.tb_modificar = new System.Windows.Forms.TextBox();
-            this.indicePrimarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.indiceSecundarioBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Entidad)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,6 +78,14 @@
             this.Dir_Atributo,
             this.Dir_Datos,
             this.Dir_SigEntidad});
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.ControlLight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv_Entidad.DefaultCellStyle = dataGridViewCellStyle7;
             this.dgv_Entidad.Location = new System.Drawing.Point(10, 57);
             this.dgv_Entidad.Name = "dgv_Entidad";
             this.dgv_Entidad.ReadOnly = true;
@@ -203,7 +212,7 @@
             this.primarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
             this.primarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.primarioToolStripMenuItem.Name = "primarioToolStripMenuItem";
-            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.primarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.primarioToolStripMenuItem.Text = "Primario";
             this.primarioToolStripMenuItem.Click += new System.EventHandler(this.primarioToolStripMenuItem_Click);
             // 
@@ -212,7 +221,7 @@
             this.secundarioToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.secundarioToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.secundarioToolStripMenuItem.Name = "secundarioToolStripMenuItem";
-            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.secundarioToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.secundarioToolStripMenuItem.Text = "Secundario";
             this.secundarioToolStripMenuItem.Click += new System.EventHandler(this.secundarioToolStripMenuItem_Click);
             // 
@@ -225,6 +234,23 @@
             this.árbolBToolStripMenuItem.Name = "árbolBToolStripMenuItem";
             this.árbolBToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.árbolBToolStripMenuItem.Text = "Árbol B+";
+            // 
+            // indicePrimarioBToolStripMenuItem
+            // 
+            this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
+            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
+            this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
+            // 
+            // indiceSecundarioBToolStripMenuItem
+            // 
+            this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
+            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
             // 
             // lbl_Cabecera
             // 
@@ -328,23 +354,6 @@
             this.tb_modificar.Name = "tb_modificar";
             this.tb_modificar.Size = new System.Drawing.Size(100, 24);
             this.tb_modificar.TabIndex = 9;
-            // 
-            // indicePrimarioBToolStripMenuItem
-            // 
-            this.indicePrimarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.indicePrimarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.indicePrimarioBToolStripMenuItem.Name = "indicePrimarioBToolStripMenuItem";
-            this.indicePrimarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.indicePrimarioBToolStripMenuItem.Text = "Primario B+";
-            this.indicePrimarioBToolStripMenuItem.Click += new System.EventHandler(this.indicePrimarioBToolStripMenuItem_Click);
-            // 
-            // indiceSecundarioBToolStripMenuItem
-            // 
-            this.indiceSecundarioBToolStripMenuItem.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.indiceSecundarioBToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.indiceSecundarioBToolStripMenuItem.Name = "indiceSecundarioBToolStripMenuItem";
-            this.indiceSecundarioBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.indiceSecundarioBToolStripMenuItem.Text = "Secundario B+";
             // 
             // FormEntidad
             // 

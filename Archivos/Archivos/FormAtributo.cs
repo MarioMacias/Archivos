@@ -120,7 +120,16 @@ namespace Archivos
             {
                 cb_Entidades.Items.Add(enti.string_Nombre);
             }
+            prueba();
             llenaDataG();
+        }
+
+        private void prueba()
+        {
+            tb_Nombre.Text = "Cve";
+            tb_Longitud.Text = "4";
+            cb_Indice.Text = "4";
+            cb_TipoDato.Text = "E";
         }
 
         /*Llenar con los datos la tabla*/

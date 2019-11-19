@@ -65,6 +65,7 @@ namespace Archivos
         {
             int i = 0;
             int j = 0;
+            int raizCont = 0;
             int numColumn = dgv_IndicePrimario.ColumnCount;
             foreach (Nodo nodo in entidades[pos].Arboles.Last().getListNodo)
             {
@@ -77,14 +78,25 @@ namespace Archivos
                 {
                     if (cb.Clave.ToString() != "-1")
                     {
-                        if (nodo.TipoDeNodo == 'R')
+                        if (nodo.TipoDeNodo == 'R' || nodo.TipoDeNodo == 'I')
                         {
-                            dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.DireccionIzquierda.ToString();
-                            i++;
-                            dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.Clave.ToString();
-                            i++;
-                            dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.DireccionDerecha.ToString();
-                            i++;
+                            if (raizCont == 0)
+                            {
+                                dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.DireccionIzquierda.ToString();
+                                i++;
+                                dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.Clave.ToString();
+                                i++;
+                                dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.DireccionDerecha.ToString();
+                                i++;
+                                raizCont++;
+                            }
+                            else
+                            {
+                                dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.Clave.ToString();
+                                i++;
+                                dgv_IndicePrimario.Rows[j].Cells[i].Value = cb.DireccionDerecha.ToString();
+                                i++;
+                            }
                         }
                         else
                         {
@@ -96,7 +108,7 @@ namespace Archivos
                     }
                 }
 
-                if (nodo.TipoDeNodo != 'R')
+                if (nodo.TipoDeNodo != 'R' || nodo.TipoDeNodo != 'I')
                 {
                     dgv_IndicePrimario.Rows[j].Cells[numColumn - 1].Value = nodo.Direccion_Siguiente.ToString();
                 }
