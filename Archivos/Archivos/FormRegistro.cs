@@ -77,10 +77,19 @@ namespace Archivos
                 MessageBox.Show("Direccion: " + nodo.Direccion.ToString());
                 foreach (ClaveBusqueda cb in nodo.clavesBusqueda)
                 {
-                    if (cb.Clave != null)
+                    if (Convert.ToInt32(cb.Clave) != -1)
                     {
-                        MessageBox.Show("Direccion cb: " + cb.Direccion.ToString());
-                        MessageBox.Show("clave cb: " + cb.Clave.ToString());
+                        if (nodo.TipoDeNodo == 'I' || nodo.TipoDeNodo == 'R')
+                        {
+                            MessageBox.Show("Direccion izquierda: " + cb.DireccionIzquierda.ToString());
+                            MessageBox.Show("clave: " + cb.Clave.ToString());
+                            MessageBox.Show("Direccion derecha: " + cb.DireccionDerecha.ToString());
+                        }
+                        else
+                        {
+                            MessageBox.Show("Direccion cb: " + cb.DireccionIzquierda.ToString());
+                            MessageBox.Show("clave cb: " + cb.Clave.ToString());
+                        }
                     }
                 }
                 

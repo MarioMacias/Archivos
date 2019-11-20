@@ -8,16 +8,16 @@ namespace Archivos
 {
     public class ClaveBusqueda
     {
-        private long direccion = -1;
+       // private long direccion = -1;
         private object dato = -1;
         private long direccionD = -1;
         private long direccionI = -1;
 
-        public ClaveBusqueda(long direccion, object dato)
+     /*   public ClaveBusqueda(long direccion, object dato)
         {
             this.direccion = direccion;
             this.dato = dato;
-        }
+        }*/
 
         public ClaveBusqueda(long direccionI, long direccionD, object dato)
         {
@@ -33,11 +33,11 @@ namespace Archivos
             set { dato = value; }
         }
 
-        public long Direccion
+      /*  public long Direccion
         {
             get { return direccion; }
             set { direccion = value; }
-        }
+        }*/
 
         public long DireccionDerecha
         {
