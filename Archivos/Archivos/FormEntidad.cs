@@ -188,9 +188,9 @@ namespace Archivos
         /*Evento del data, para mostras valores en los tb, modificaciones, etc*/
         private void dgv_Entidad_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            int pos = dgv_Entidad.CurrentRow.Index;
             try
             {
+                int pos = dgv_Entidad.CurrentRow.Index;
                 tb_modificar.Text = entidades.ElementAt(pos).string_Nombre;
                 lb_atributo.Text = "Atributos de la entidad: " + entidades.ElementAt(pos).string_Nombre;
                 //btn_Atributo.Text = "Tabla de atributos de:  " + entidades.ElementAt(pos).string_Nombre;

@@ -315,10 +315,8 @@ namespace Archivos
         {
             Fichero = new FileStream(nombreArchivoDAT, FileMode.Open, FileAccess.Write);
             Fichero.Position = Fichero.Length; // Hasta el final del archivo
-            //MessageBox.Show("primer final: " + Fichero.Length);
             binaryWriter = new BinaryWriter(Fichero);
             binaryWriter.Write(entidades[pos].registros.Last().dir_Registro);
-            //MessageBox.Show("Tamaño: 8");
 
             for (int i = 0; i < entidades[pos].atributos.Count; ++i)
             {
@@ -334,7 +332,6 @@ namespace Archivos
                         caracter[j] = c;
                         j++;
                     }
-                    //MessageBox.Show("Tamaño: " + caracter.Length);
                     binaryWriter.Write(caracter);
                 }
                 else//Si es de tipo entero
@@ -342,15 +339,12 @@ namespace Archivos
                     if (entidades[pos].atributos[i].tipo_Dato == 'E') //Si es de tipo entero
                     {
                         int entero = int.Parse(vs);
-                        //MessageBox.Show("Tamaño: 4");
                         binaryWriter.Write(entero);
                     }
                 }
             }
 
             binaryWriter.Write(entidades.ElementAt(pos).registros.Last().dir_sigRegistro);
-            //MessageBox.Show("Tamaño: 8");
-            //MessageBox.Show("segundo final: " + Fichero.Length);
             Fichero.Close();
         }
 

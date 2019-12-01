@@ -135,21 +135,27 @@ namespace Archivos
         /*Llenar con los datos la tabla*/
         private void llenaDataG()
         {
-            dgv_Atributo.Rows.Clear();
+            try{
+                dgv_Atributo.Rows.Clear();
 
-            if (entidades.ElementAt(pos).atributos != null)
-            {
-                foreach (Atributo at in entidades.ElementAt(pos).atributos)
+                if (entidades.ElementAt(pos).atributos != null)
                 {
-                    string identid = BitConverter.ToString(at.id_Atributo);
-                    dgv_Atributo.Rows.Add(identid, at.string_Nombre, at.tipo_Dato, at.longitud_Tipo, at.direccion_Atributo, at.tipo_Indice, at.direccion_Indice, at.direccion_sigAtributo);
+                    foreach (Atributo at in entidades.ElementAt(pos).atributos)
+                    {
+                        string identid = BitConverter.ToString(at.id_Atributo);
+                        dgv_Atributo.Rows.Add(identid, at.string_Nombre, at.tipo_Dato, at.longitud_Tipo, at.direccion_Atributo, at.tipo_Indice, at.direccion_Indice, at.direccion_sigAtributo);
+                    }
+                    cb_Entidades.Text = entidades.ElementAt(pos).string_Nombre;
+                    botonesVisibles(true);
                 }
-                cb_Entidades.Text = entidades.ElementAt(pos).string_Nombre;
-                botonesVisibles(true);
+                else
+                {
+                    MessageBox.Show("No existen atributos.");
+                }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("No existen atributos.");
+                MessageBox.Show("Seleccione una Entidad");
             }
         }
 

@@ -38,6 +38,7 @@
             this.eliminarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pruebaArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btn_regresaEntidad = new System.Windows.Forms.Button();
+            this.leerArbolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv_Registro)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -75,7 +76,8 @@
             this.agregarToolStripMenuItem,
             this.modificarToolStripMenuItem,
             this.eliminarToolStripMenuItem,
-            this.pruebaArbolToolStripMenuItem});
+            this.pruebaArbolToolStripMenuItem,
+            this.leerArbolToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(830, 24);
@@ -129,6 +131,13 @@
             this.btn_regresaEntidad.UseVisualStyleBackColor = false;
             this.btn_regresaEntidad.Click += new System.EventHandler(this.btn_regresaEntidad_Click);
             // 
+            // leerArbolToolStripMenuItem
+            // 
+            this.leerArbolToolStripMenuItem.Name = "leerArbolToolStripMenuItem";
+            this.leerArbolToolStripMenuItem.Size = new System.Drawing.Size(71, 20);
+            this.leerArbolToolStripMenuItem.Text = "Leer arbol";
+            this.leerArbolToolStripMenuItem.Click += new System.EventHandler(this.leerArbolToolStripMenuItem_Click);
+            // 
             // FormRegistro
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -161,5 +170,6 @@
         private System.Windows.Forms.ToolStripMenuItem agregarToolStripMenuItem;
         private System.Windows.Forms.Button btn_regresaEntidad;
         private System.Windows.Forms.ToolStripMenuItem pruebaArbolToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem leerArbolToolStripMenuItem;
     }
 }

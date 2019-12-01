@@ -23,13 +23,7 @@ namespace Archivos
             ///Primero escribimos nuestro indice de claves
             Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
             Fichero.Seek(entidades[pos].atributos[indice2].direccion_Indice, SeekOrigin.Begin);
-
-           /* //MessageBox.Show("fichero 1: " + Fichero.Length);
-            Fichero.Position = Fichero.Length;
-
-            //MessageBox.Show("Direccion2: " + entidades[pos].secundarios.Last().listSecD.First().getDireccion);
-            entidades[pos].secundarios.Last().listSecD.First().getDireccion = Fichero.Length;
-            */
+            
             binaryWriter = new BinaryWriter(Fichero);
 
             for (int s2 = 0; s2 < entidades[pos].secundarios.Count; ++s2)
@@ -37,9 +31,7 @@ namespace Archivos
                 for (int s1 = 0; s1 < entidades[pos].secundarios[s2].listSecD.Count; ++s1)
                 {
                     string vs = entidades[pos].secundarios[s2].listSecD[s1].getClave.ToString();
-                    //MessageBox.Show("vs: " + vs);
-                    //MessageBox.Show("indice: " + indice2);
-                    //MessageBox.Show("tipo dato: " + entidades[pos].atributos[indice2].tipo_Dato);
+
                     if (entidades[pos].atributos[indice2].tipo_Dato == 'C')
                     {
                         char[] caracter = new char[entidades[pos].atributos[indice2].longitud_Tipo];
@@ -306,12 +298,6 @@ namespace Archivos
         {
             //Solo empezaremos a escribir donde se encuentre la direccion de ese bloque
             Fichero = new FileStream(nombreArchivoIDX, FileMode.Open, FileAccess.Write);
-           /* MessageBox.Show("nombre del archivo: " + nombreArchivoIDX);
-            MessageBox.Show("tamaño fichero" + Fichero.Length.ToString());
-            MessageBox.Show
-            MessageBox.Show("pos: " + pos);
-            MessageBox.Show("tamaño secundarios: " + entidades[pos].secundarios.Count.ToString());
-            MessageBox.Show("tamaño del ultimo: " + entidades[pos].secundarios.Last().listSecD.Count.ToString());*/
             Fichero.Seek(entidades[pos].secundarios.Last().listSecD[pos2].getDireccion, SeekOrigin.Begin);
 
             binaryWriter = new BinaryWriter(Fichero);
@@ -329,20 +315,12 @@ namespace Archivos
             int res = -1;
 
             string vs2 = r.element_Registro[indice2].ToString();
-            /*MessageBox.Show("La clave a buscar");
-            MessageBox.Show(vs2);*/
-            //MessageBox.Show("iteracion: " + entidades[pos].secundarios.Last().getIteracion.ToString());
             for (int i = 0; i < entidades[pos].secundarios.Last().getIteracion; ++i)
             {
                 string vs = entidades[pos].secundarios.Last().listSecD[i].getClave.ToString();
 
                 if (vs == vs2)
                 {
-                    /*MessageBox.Show("Las claves ");
-                    MessageBox.Show(vs2);
-                    MessageBox.Show(" y ");
-                    MessageBox.Show(vs);
-                    MessageBox.Show("Coinciden");*/
                     res = i;
                 }
             }
@@ -486,6 +464,7 @@ namespace Archivos
         /*Metodo para obtener el numero de iteracion que existe en el momento*/
         public int numeroDeIteracion(int ite)
         {
+
             int numIte = 0;
             //MessageBox.Show("ite: " + ite);
             if (ite != 8)

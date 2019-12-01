@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections;
 
 namespace Archivos
 {
@@ -30,6 +31,9 @@ namespace Archivos
 
         /*Para los arboles primarios*/
         public List<ArbolB> Arboles = new List<ArbolB>();
+
+        /*Para los arboles secundarios*/
+       // public List<ArbolB> ArbolSecundario = new List<ArbolB>();
 
         /*Constructor de una nueva identidad*/
         public Entidad(string sNombre)
